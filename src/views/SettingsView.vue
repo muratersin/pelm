@@ -1,5 +1,11 @@
+<script setup lang="ts">
+import PageLayout from '@/components/Layout/PageLayout.vue'
+import NavigationList from '@/components/Navigation/NavigationList.vue'
+import { SETTINGS_NAV_LIST_ITEMS } from '@/constants/navigation'
+</script>
+
 <template>
-  <div class="about">
-    <h1>This is an settings page</h1>
-  </div>
+  <PageLayout title="Settings">
+    <NavigationList :items="SETTINGS_NAV_LIST_ITEMS" />
+  </PageLayout>
 </template>

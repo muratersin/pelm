@@ -15,6 +15,16 @@ const router = createRouter({
       component: () => import('@/views/SettingsView.vue')
     },
     {
+      path: '/settings/import',
+      name: 'import',
+      component: () => import('@/views/ImportLibraryView.vue')
+    },
+    {
+      path: '/settings/export',
+      name: 'export',
+      component: () => import('@/views/ExportLibraryView.vue')
+    },
+    {
       path: '/stats',
       name: 'stats',
       component: () => import('@/views/StatsView.vue')

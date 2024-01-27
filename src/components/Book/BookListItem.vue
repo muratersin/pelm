@@ -1,16 +1,8 @@
 <script setup lang="ts">
-import logger from '@/helpers/logger'
-import AppImage from './AppImage.vue'
-
-type ListBook = {
-  id: string
-  name: string
-  author: string
-  cover: string
-}
+import AppImage from '@/components/AppImage.vue'
 
 interface Props {
-  book: ListBook
+  book: BookListItem
 }
 
 defineProps<Props>()
@@ -26,9 +18,10 @@ const onDragStart = () => {
     @dragstart="onDragStart"
   >
     <AppImage :src="book.cover" :alt="book.name" class="rounded h-full w-auto" />
-    <div class="ml-4">
+    <div class="ml-4 flex-1">
       <div class="font-semibold text-gray-800">{{ book.name }}</div>
       <div class="text-gray-500">{{ book.author }}</div>
+      <div class="text-gray-300 flex justify-end">{{ book.createdAt }}</div>
     </div>
   </div>
 </template>
