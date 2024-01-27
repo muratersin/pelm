@@ -1,1 +1,8 @@
 @import './base.css';
+
+#app {
+  display: grid;
+  height: 100vh;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 55px;
+}
