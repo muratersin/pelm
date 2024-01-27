@@ -14,7 +14,7 @@ const onDragStart = () => {
 
 <template>
   <div
-    class="h-24 w-full shadow-sm flex mb-2 bg-white rounded items-center p-2"
+    class="h-24 w-full shadow-sm flex mb-1 bg-white rounded items-center p-2"
     @dragstart="onDragStart"
   >
     <AppImage :src="book.cover" :alt="book.name" class="rounded h-full w-auto" />

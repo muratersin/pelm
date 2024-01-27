@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import BookList from '@/components/Book/BookList.vue'
 import BookListItem from '@/components/Book/BookListItem.vue'
+import BookListTopBar from '@/components/Book/BookListTopBar.vue'
 
 const items: BookListItem[] = new Array(20).fill(null).map((d, i) => ({
   id: i + '-index',
@@ -12,7 +13,8 @@ const items: BookListItem[] = new Array(20).fill(null).map((d, i) => ({
 </script>
 
 <template>
-  <BookList>
+  <BookListTopBar />
+  <BookList class="mt-">
     <BookListItem v-for="item in items" :key="item.id" :book="item" />
   </BookList>
 </template>
