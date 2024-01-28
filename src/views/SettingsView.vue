@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import PageLayout from '@/components/Layout/PageLayout.vue'
-import NavigationList from '@/components/Navigation/NavigationList.vue'
+import PageLayout from '@/components/layout/PageLayout.vue'
+import NavigationList from '@/components/navigation/NavigationList.vue'
 import { SETTINGS_NAV_LIST_ITEMS } from '@/constants/navigation'
 </script>
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import BookList from '@/components/Book/BookList.vue'
-import BookListItem from '@/components/Book/BookListItem.vue'
-import BookListTopBar from '@/components/Book/BookListTopBar.vue'
+import BookList from '@/components/book/BookList.vue'
+import BookListItem from '@/components/book/BookListItem.vue'
+import BookListTopBar from '@/components/book/BookListTopBar.vue'
 
 const items: BookListItem[] = new Array(20).fill(null).map((d, i) => ({
   id: i + '-index',

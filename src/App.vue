@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 
-import NavigationBar from '@/components/Navigation/NavigationBar.vue'
+import NavigationBar from '@/components/navigation/NavigationBar.vue'
 import { NAV_BAR_ITEMS } from '@/constants/navigation'
 </script>
 
