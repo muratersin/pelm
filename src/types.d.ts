@@ -46,4 +46,5 @@ type ParsedFileHeaders = [
 type BookDataHeader = {
   displayedName: string
   name: string
+  required?: boolean
 }
