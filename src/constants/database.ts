@@ -14,11 +14,11 @@ export const BOOK_DB_FIELD_NAMES = [
 export const BOOK_DATA_HEADERS: BookDataHeader[] = [
   { displayedName: 'Title', name: 'title', required: true },
   { displayedName: 'Authors', name: 'authors', required: true },
-  { displayedName: 'Caregories', name: 'categories' },
+  { displayedName: 'Categories', name: 'categories' },
   { displayedName: 'Created At', name: 'createdAt' },
   { displayedName: 'Publisher', name: 'publisher' },
   { displayedName: 'Page Size', name: 'pageSize' },
   { displayedName: 'ISBN', name: 'isbn' },
-  { displayedName: 'summary', name: 'summary' },
-  { displayedName: 'coverUrl', name: 'coverUrl' }
+  { displayedName: 'Summary', name: 'summary' },
+  { displayedName: 'Cover URL', name: 'coverUrl' }
 ]

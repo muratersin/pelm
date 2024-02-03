@@ -27,6 +27,6 @@ const onFileParsingCompleted = (result: { headers: string[]; data: string[][] })
       @goBack="step = 1"
       @goNext="step = 3"
     />
-    <MapHeader v-else-if="step === 3" :headers="headers" />
+    <MapHeader v-else-if="step === 3" :headers="headers" @goBack="step = 2" />
   </PageLayout>
 </template>
