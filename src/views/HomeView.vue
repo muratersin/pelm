@@ -14,7 +14,7 @@ const items: BookListItem[] = new Array(20).fill(null).map((d, i) => ({
 
 <template>
   <BookListTopBar />
-  <BookList class="mt-">
+  <BookList>
     <BookListItem v-for="item in items" :key="item.id" :book="item" />
   </BookList>
 </template>

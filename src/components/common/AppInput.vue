@@ -12,7 +12,7 @@ const model = defineModel()
 
 <template>
   <div class="flex justify-between border rounded border-stone-500 flex-1 p-2">
-    <input v-model="model" v-bind="$attrs" class="w-full" />
-    <IconXCircle v-if="clearabled" />
+    <input v-model="model" v-bind="$attrs" class="w-full  focus:outline-none" />
+    <IconXCircle v-if="clearabled && model" @click="model = null" role="button" class="text-gray-500" />
   </div>
 </template>

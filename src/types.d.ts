@@ -10,12 +10,13 @@ type Book = {
   title: string
   authors: string[]
   categories: string[]
-  publish_date: string
+  publishDate: string
+  createdAt: string
   publisher: string
   pages: number
   isbn: string
   summary: string
-  cover: string
+  coverUrl: string
 }
 
 type NavItem = {
@@ -23,4 +24,26 @@ type NavItem = {
   to: string
   title?: string
   isCurrent?: boolean
+}
+
+type ParsedArray = Array<string[]>
+
+type ParsedFileHeaders = [
+  'Title',
+  'Authors',
+  'Seri',
+  'Categories',
+  'Publish date ',
+  'Publisher',
+  'Pages',
+  'ISBN',
+  'Read',
+  'Reading periods',
+  'Yorumlar',
+  'Summary'
+]
+
+type BookDataHeader = {
+  displayedName: string
+  name: string
 }
