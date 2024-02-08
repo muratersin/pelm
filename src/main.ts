@@ -24,3 +24,6 @@ const start = async () => {
 start()
 
 // TODO: use teleport component  for modal
+// fetch cover image google api books or openlib or alternate
+// use backend for proxy googleapi
+// https://www.reddit.com/r/webdev/comments/z6oj76/api_that_returns_basic_information_about_books/
