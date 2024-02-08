@@ -49,12 +49,12 @@ const validate = (): boolean => {
     errorMap.value = undefined
   }, 4000)
 
-  return hasError
+  return !hasError
 }
 
 const save = () => {
   if (validate()) {
-    emit('save', mappedHeaders)
+    emit('save', Object.assign({}, mappedHeaders))
   }
 }
 </script>
@@ -68,7 +68,7 @@ const save = () => {
   <div v-for="header of BOOK_DATA_HEADERS" :key="header.name" class="border-b py-4">
     <div class="flex justify-between">
       <div class="w-1/2">{{ header.displayedName }}</div>
-      <div class="w-1/2">
+      <div class="w-1/2 flex justify-end">
         <AppSelect
           @change="(v) => handleChange(header.name, v)"
           :options="options"
