@@ -24,14 +24,12 @@ const start = async () => {
 start()
 
 // TODO: use teleport component  for modal
-// handle offline status ans show toast message
 // toast message component
 // modal component
 // chose font
-// TODO: book detail page
 // delete book
 // update book
 // add book
 // stats
 // export lib
-// fill missing fields from google api
+// fill missing fields from google api and add alternate apis
