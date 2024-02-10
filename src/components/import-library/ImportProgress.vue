@@ -18,11 +18,11 @@ const progressBarStyle = computed(() => ({
   <div class="flex justify-center mt-10">
     <div class="w-full text-center">
       <div class="mb-4">{{ total }} / {{ completed }}</div>
-      <div class="border-2 border-lime-500 rounded-full w-full h-7 relative">
+      <div class="border border-lime-400 rounded w-full h-7 relative">
         <div class="font-semibold z-50 absolute right-1">{{ percent }}%</div>
         <div
           :style="progressBarStyle"
-          class="h-full bg-lime-300 rounded-full absolute top-0 left-0 z-0"
+          class="h-full bg-lime-400 rounded absolute top-0 left-0 z-0"
         ></div>
       </div>
     </div>

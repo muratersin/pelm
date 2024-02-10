@@ -14,7 +14,7 @@ type Book = {
   publishDate: string
   createdAt: number
   publisher: string
-  pages: number
+  pageSize: number
   isbn: string
   summary: string
   coverUrl: string
@@ -28,21 +28,6 @@ type NavItem = {
 }
 
 type ParsedArray = Array<string[]>
-
-type ParsedFileHeaders = [
-  'Title',
-  'Authors',
-  'Seri',
-  'Categories',
-  'Publish date ',
-  'Publisher',
-  'Pages',
-  'ISBN',
-  'Read',
-  'Reading periods',
-  'Yorumlar',
-  'Summary'
-]
 
 type BookDataHeader = {
   displayedName: string

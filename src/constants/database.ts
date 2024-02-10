@@ -17,6 +17,7 @@ export const BOOK_DATA_HEADERS: BookDataHeader[] = [
   { displayedName: 'Categories', name: 'categories' },
   { displayedName: 'Created At', name: 'createdAt' },
   { displayedName: 'Publisher', name: 'publisher' },
+  { displayedName: 'Publish Date', name: 'publishDate' },
   { displayedName: 'Page Size', name: 'pageSize' },
   { displayedName: 'ISBN', name: 'isbn' },
   { displayedName: 'Summary', name: 'summary' },

@@ -46,25 +46,27 @@ onBeforeMount(getBook)
           </div>
         </div>
       </div>
-
       <div class="flex justify-around my-10">
         <div class="text-center text-gray-600 w-1/3 border-r px-2">
-          <div class="font-bold text-lg">{{ book.pageSize || '564' }}</div>
-          <div class="text-sm">Pages</div>
+          <div class="font-semibold">{{ book.pageSize || '564' }}</div>
+          <div class="text-sm text-gray-400">Pages</div>
         </div>
         <div class="text-center text-gray-600 w-1/3 px-2">
-          <div class="text-lg font-bold">{{ book?.publishDate || '-' }}</div>
-          <div class="text-sm">Released</div>
+          <div class="font-semibold">{{ book?.publishDate || '-' }}</div>
+          <div class="text-sm text-gray-400">Released</div>
         </div>
         <div class="text-center text-gray-600 w-1/3 border-l px-2">
-          <div class="text-lg font-bold">{{ formatDate(book.createdAt, 'detail') || '-' }}</div>
-          <div class="text-sm">Added</div>
+          <div class="font-semibold">{{ formatDate(book.createdAt, 'detail') || '-' }}</div>
+          <div class="text-sm text-gray-400">Added</div>
         </div>
       </div>
-      <div v-if="book.categories" class="mb-4 font-semibold text-lime-700">
-        {{ book.categories }}
+      <div v-if="book.publisher" class="font-semibold text-sm border-b py-2 text-gray-500">
+        <span>Publisher - </span> <span class="text-lime-700">{{ book.publisher }}</span>
       </div>
-      <div v-if="book.summary">
+      <div v-if="book.categories" class="font-semibold text-sm border-b py-2 text-gray-500">
+        <span>Categories - </span> <span class="text-lime-700">{{ book.categories }}</span>
+      </div>
+      <div v-if="book.summary" class="mt-4">
         <h4 class="font-semibold mb-2">Summary</h4>
         <p class="text-gray-600">{{ book.summary }}</p>
       </div>
