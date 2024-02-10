@@ -5,5 +5,9 @@ export const fillDefaultFields = (book: Book): Book => {
     book.coverUrl = DEFAULT_COVER_URI
   }
 
+  if (!book.createdAt) {
+    book.createdAt = Date.now()
+  }
+
   return book
 }

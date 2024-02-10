@@ -3,7 +3,7 @@ type BookListItem = {
   title: string
   authors: string[]
   coverUrl: string
-  createdAt: string
+  createdAt: number
 }
 
 type Book = {
@@ -11,7 +11,7 @@ type Book = {
   authors: string[]
   categories: string[]
   publishDate: string
-  createdAt: string
+  createdAt: number
   publisher: string
   pages: number
   isbn: string

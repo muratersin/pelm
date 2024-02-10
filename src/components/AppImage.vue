@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import logger from '@/helpers/logger'
+import { DEFAULT_COVER_URI } from '@/constants/book'
 
 interface Props {
   src: string
@@ -7,12 +9,20 @@ interface Props {
 }
 
 defineProps<Props>()
+const imageRef = ref()
 
 const onError = () => {
   logger.error('Image Load error')
+  imageRef.value.src = DEFAULT_COVER_URI
+}
+
+const loadedmetadata = () => {
+  if (imageRef.value.naturalHeight === 1) {
+    imageRef.value.src = DEFAULT_COVER_URI
+  }
 }
 </script>
 
 <template>
-  <img :src="src" :alt="alt" @error="onError" />
+  <img ref="imageRef" :src="src" :alt="alt" @error="onError" @load="loadedmetadata" />
 </template>

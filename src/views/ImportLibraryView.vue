@@ -6,6 +6,7 @@ import PageLayout from '@/components/layout/PageLayout.vue'
 import FileSelect from '@/components/import-library/FileSelect.vue'
 import DataPresentation from '@/components/import-library/DataPresentation.vue'
 import MapHeader from '@/components/import-library/MapHeader.vue'
+import ImportProgress from '@/components/import-library/ImportProgress.vue'
 import logger from '@/helpers/logger'
 
 const headers = ref<string[]>([])
@@ -25,32 +26,27 @@ const onFileParsingCompleted = (result: { headers: string[]; data: string[][] })
   completedProgress.total = result.data.length
 }
 
-const save = async (mappedHeaders: any, index = 0) => {
+const save = async (mappedHeaders: any) => {
   try {
-    step.value = 4
-    loading.value = true
-    const bookObject = data.value[index]
-    const book: any = {}
+    for (const bookObject of data.value) {
+      loading.value = true
+      const book: any = {}
 
-    Object.keys(mappedHeaders).forEach((header) => {
-      book[header] = bookObject[mappedHeaders[header]]
-    })
+      Object.keys(mappedHeaders).forEach((header) => {
+        book[header] = bookObject[mappedHeaders[header]]
+      })
 
-    try {
-      const result = await fetchBookCover({ isbn: book.isbn, title: book.title })
-      book.coverUrl = result.coverUrl
-    } catch (err) {
-      logger.error("Couln't find cover image.", err)
-    } finally {
-      logger.info(book)
-      addBook(book)
-      books.value.push(book as Book)
-    }
+      try {
+        const result = await fetchBookCover({ isbn: book.isbn, title: book.title })
+        book.coverUrl = result.coverUrl
+      } catch (err) {
+        logger.error("Couln't find cover image.", err)
+      } finally {
+        await addBook(book)
+        logger.info(book)
+      }
 
-    completedProgress.completed += 1
-
-    if (index < 10) {
-      save(mappedHeaders, index + 1)
+      completedProgress.completed += 1
     }
   } catch (err) {
     logger.error('Save book error: ', err)
@@ -63,7 +59,12 @@ const save = async (mappedHeaders: any, index = 0) => {
 
 <template>
   <PageLayout title="Import Library">
-    <FileSelect v-if="step === 1" @completed="onFileParsingCompleted" />
+    <ImportProgress
+      v-if="loading"
+      :total="completedProgress.total"
+      :completed="completedProgress.completed"
+    />
+    <FileSelect v-else-if="step === 1" @completed="onFileParsingCompleted" />
     <DataPresentation
       v-else-if="step === 2"
       :headers="headers"
@@ -72,12 +73,5 @@ const save = async (mappedHeaders: any, index = 0) => {
       @goNext="step = 3"
     />
     <MapHeader v-else-if="step === 3" :headers="headers" @goBack="step = 2" @save="save" />
-    <div v-else-if="step === 4">
-      {{ completedProgress }}
-    </div>
-    <div v-for="b in books" class="border m-4" :key="b.title">
-      <img :src="b.coverUrl" :alt="b.title" />
-      {{ b.title }}
-    </div>
   </PageLayout>
 </template>
