@@ -8,7 +8,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const percent = computed(() => (props.completed / props.total) * 100)
+const percent = computed(() => Math.ceil((props.completed / props.total) * 100))
 const progressBarStyle = computed(() => ({
   width: `${percent.value}%`
 }))

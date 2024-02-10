@@ -17,7 +17,6 @@ const completedProgress = reactive<{ total: number; completed: number }>({
   total: 0,
   completed: 0
 })
-const books = ref<Book[]>([])
 
 const onFileParsingCompleted = (result: { headers: string[]; data: string[][] }) => {
   headers.value = result.headers
