@@ -1,14 +1,18 @@
-export const fetchBooks = async (query: {
+const BOOK_SERVICE = 'http://localhost:3000'
+import { fillDefaultFields } from '@/helpers/book'
+import { DBService } from '@/services/db.service'
+
+export const fetchBookCover = async (query: {
   title?: string
   isbn?: string
-}): Promise<GoogleApiBookRequestResponse> => {
+}): Promise<BookCoverRequestResponse> => {
   const { isbn, title } = query
 
   if (!isbn && !title) {
     throw new Error('Please provide ISBN or title')
   }
 
-  const apiUrl = `https://www.googleapis.com/books/v1/volumes?key=AIzaSyCDf7i0KYdVF58MMrzPHF7zE6IOLc9Umaw&q=${isbn ? `isbn:${isbn}` : `intitle:${title}`}`
+  const apiUrl = `${BOOK_SERVICE}/cover?${isbn ? `isbn=${isbn}` : `title=${title}`}`
 
   const response = await fetch(apiUrl)
   const result = await response.json()
@@ -16,10 +20,48 @@ export const fetchBooks = async (query: {
   return result
 }
 
-export const addBook = (book: Book) => {}
+export const addBook = (book: Book) => {
+  return new Promise((resolve, reject) => {
+    if (!DBService.instance?.db) {
+      return reject('ObjectStore is not found!')
+    }
+
+    const transaction = DBService.instance.db.transaction('books', 'readwrite')
+    const objectStore = transaction.objectStore('books')
+
+    const req = objectStore?.add(fillDefaultFields(book))
+
+    req.onsuccess = () => {
+      resolve(req.result)
+    }
+
+    req.onerror = () => {
+      reject(req.error)
+    }
+  })
+}
 
 export const deleteBook = (id: number) => {}
 
-export const updateBook = (book: book) => {}
+export const updateBook = (book: Book) => {}
 
-export const getBooks = () => {}
+export const getBooks = (): Promise<Book[]> => {
+  return new Promise((resolve, reject) => {
+    if (!DBService.instance?.db) {
+      return reject('ObjectStore is not found!')
+    }
+
+    const transaction = DBService.instance.db.transaction('books', 'readwrite')
+    const objectStore = transaction.objectStore('books')
+
+    const req = objectStore?.getAll()
+
+    req.onsuccess = () => {
+      resolve(req.result)
+    }
+
+    req.onerror = () => {
+      reject(req.error)
+    }
+  })
+}

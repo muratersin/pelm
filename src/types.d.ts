@@ -1,8 +1,8 @@
 type BookListItem = {
   id: string
-  name: string
-  author: string
-  cover: string
+  title: string
+  authors: string[]
+  coverUrl: string
   createdAt: string
 }
 
@@ -53,6 +53,11 @@ type GoogleApiHttpResponse<T> = {
   items: T[]
   kind: string
   totalItems: number
+}
+
+type BookCoverRequestResponse = {
+  coverUrl?: string
+  blob: Blob
 }
 
 type GoogleApiBookRequestResponse = GoogleApiHttpResponse<GoogleApiBook>
