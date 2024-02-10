@@ -47,6 +47,8 @@ const fetchBooks = async () => {
     <AppLoader />
   </div>
   <BookList>
-    <BookListItem v-for="item in filteredBooks" :key="item.id" :book="item" />
+    <RouterLink v-for="item in filteredBooks" :key="item.id" :to="`/book/${item.id}`">
+      <BookListItem :book="item" />
+    </RouterLink>
   </BookList>
 </template>

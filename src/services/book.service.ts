@@ -65,3 +65,19 @@ export const getBooks = (): Promise<Book[]> => {
     }
   })
 }
+
+export const getBookById = (id: number): Promise<Book> => {
+  return new Promise((resolve, reject) => {
+    const req = DBService?.instance?.db?.transaction('books').objectStore('books').get(Number(id))
+
+    if (!req) return reject()
+
+    req.onsuccess = (event) => {
+      resolve(event?.target?.result as Book)
+    }
+
+    req.onerror = () => {
+      reject(req.error)
+    }
+  })
+}

@@ -27,4 +27,11 @@ start()
 // handle offline status ans show toast message
 // toast message component
 // modal component
-// spinner component
+// chose font
+// TODO: book detail page
+// delete book
+// update book
+// add book
+// stats
+// export lib
+// fill missing fields from google api

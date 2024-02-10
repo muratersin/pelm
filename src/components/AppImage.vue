@@ -4,7 +4,7 @@ import logger from '@/helpers/logger'
 import { DEFAULT_COVER_URI } from '@/constants/book'
 
 interface Props {
-  src: string
+  src?: string
   alt: string
 }
 
