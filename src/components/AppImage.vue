@@ -13,11 +13,11 @@ const imageRef = ref()
 
 const onError = () => {
   logger.error('Image Load error')
-  imageRef.value.src = DEFAULT_COVER_URI
+  loadedmetadata()
 }
 
 const loadedmetadata = () => {
-  if (imageRef.value.naturalHeight === 1) {
+  if (imageRef.value?.naturalHeight === 1) {
     imageRef.value.src = DEFAULT_COVER_URI
   }
 }

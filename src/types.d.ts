@@ -1,14 +1,15 @@
 type BookListItem = {
   id: string
   title: string
-  authors: string[]
+  authors: string
   coverUrl: string
   createdAt: number
 }
 
 type Book = {
+  id: string
   title: string
-  authors: string[]
+  authors: string
   categories: string[]
   publishDate: string
   createdAt: number

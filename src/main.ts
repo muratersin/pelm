@@ -24,3 +24,7 @@ const start = async () => {
 start()
 
 // TODO: use teleport component  for modal
+// handle offline status ans show toast message
+// toast message component
+// modal component
+// spinner component
