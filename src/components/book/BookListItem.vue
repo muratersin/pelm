@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import AppImage from '@/components/AppImage.vue'
+import IconMore from '@/components/icons/IconMore.vue'
+import AppDropdown from '@/components/common/AppDropdown.vue'
 import { formatDate } from '@/helpers/date'
 
 interface Props {
@@ -10,6 +12,10 @@ interface Props {
 defineProps<Props>()
 
 const date = computed(() => (date: number) => formatDate(date))
+const ACTIONS = [
+  { text: 'Delete', value: 'delete', class: 'text-red-400 font-semibold' },
+  { text: 'Update', value: 'update' }
+]
 </script>
 
 <template>
@@ -21,6 +27,11 @@ const date = computed(() => (date: number) => formatDate(date))
       </div>
       <div class="text-gray-500">{{ book.authors }}</div>
       <div class="text-gray-300 flex justify-end">{{ date(book.createdAt) }}</div>
+    </div>
+    <div class="ml-4 h-full">
+      <AppDropdown :items="ACTIONS">
+        <IconMore class="text-gray-500 w-5" />
+      </AppDropdown>
     </div>
   </div>
 </template>
