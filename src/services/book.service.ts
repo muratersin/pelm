@@ -29,7 +29,9 @@ export const addBook = (book: Book) => {
     const transaction = DBService.instance.db.transaction('books', 'readwrite')
     const objectStore = transaction.objectStore('books')
 
-    const req = objectStore?.add(fillDefaultFields(book))
+    const req = book.id
+      ? objectStore?.put(fillDefaultFields(book))
+      : objectStore?.add(fillDefaultFields(book))
 
     req.onsuccess = () => {
       resolve(req.result)

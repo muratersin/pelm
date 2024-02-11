@@ -8,7 +8,7 @@ type BookListItem = {
 
 type Book = {
   id?: number
-  title: string
+  title?: string
   authors?: string
   categories?: string[]
   publishDate?: string

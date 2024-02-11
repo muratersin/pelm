@@ -23,12 +23,6 @@ const start = async () => {
 }
 start()
 
-// TODO: use teleport component  for modal
-// toast message component
-// modal component
-// chose font
-// update book
-// add book
 // stats
 // export lib
 // fill missing fields from google api and add alternate apis

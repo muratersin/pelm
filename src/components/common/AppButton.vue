@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import AppLoader from '@/components/common/AppLoader.vue'
 
 interface Props {
   type?: 'primary' | 'danger' | 'success' | 'default'
+  loading?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -28,7 +30,11 @@ const classNames = computed(() => {
     v-bind="$attrs"
     class="block border shadow-sm font-semibold py-1 px-5 rounded"
     :class="classNames"
+    :disabled="loading"
   >
-    <slot />
+    <AppLoader v-if="loading" class="mx-auto" />
+    <div v-else>
+      <slot />
+    </div>
   </button>
 </template>

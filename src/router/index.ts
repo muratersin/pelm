@@ -32,6 +32,16 @@ const router = createRouter({
       path: '/stats',
       name: 'stats',
       component: () => import('@/views/StatsView.vue')
+    },
+    {
+      path: '/add',
+      name: 'add',
+      component: () => import('@/views/BookFormView.vue')
+    },
+    {
+      path: '/update/:id',
+      name: 'update',
+      component: () => import('@/views/BookFormView.vue')
     }
   ]
 })

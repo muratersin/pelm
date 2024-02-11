@@ -31,7 +31,7 @@ const toggle = (e: Event) => {
       <slot />
     </div>
     <div
-      class="absolute transition-all bg-white border rounded shadow-sm z-10 right-0"
+      class="absolute transition-all bg-white border rounded shadow-sm right-0"
       :class="{ 'h-auto visible': isOpen, 'h-0 hidden': !isOpen }"
     >
       <ul>

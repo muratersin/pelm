@@ -17,7 +17,6 @@ const getBook = async () => {
   try {
     const result = await getBookById(route.params.id)
     book.value = result
-    console.log(result)
   } catch (err) {
     logger.error(err)
   } finally {

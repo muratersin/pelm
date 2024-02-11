@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 import BookList from '@/components/book/BookList.vue'
 import BookListItem from '@/components/book/BookListItem.vue'
 import AppInput from '@/components/common/AppInput.vue'
 import AppLoader from '@/components/common/AppLoader.vue'
 import AppModal from '@/components/common/AppModal.vue'
+import IconPlus from '@/components/icons/IconPlus.vue'
 import { getBooks, deleteBookById } from '@/services/book.service'
 import { convertToBookListItem } from '@/helpers/book'
 import logger from '@/helpers/logger'
 import AppButton from '@/components/common/AppButton.vue'
 
+const router = useRouter()
 const books = ref<Array<BookListItem>>()
 const searchText = ref<string>('')
 const loading = ref<boolean>(true)
@@ -48,6 +51,8 @@ const onAction = (actionName: 'delete' | 'update', id: number, title: string) =>
       id,
       title
     }
+  } else if (actionName === 'update') {
+    router.push(`/update/${id}`)
   }
 }
 
@@ -64,8 +69,16 @@ const deleteBook = async () => {
 </script>
 
 <template>
-  <!-- <div class="h-32">filter and sort</div> -->
-  <div class="w-full bg-white shadow p-2 sticky top-0">
+  <div class="p-2">
+    <div class="flex justify-end">
+      <RouterLink to="/add">
+        <AppButton type="primary" class="text-white bg-lime-600 py-1 px-1 rounded-full">
+          <IconPlus class="m-1" />
+        </AppButton>
+      </RouterLink>
+    </div>
+  </div>
+  <div class="w-full bg-white shadow p-2 sticky top-0 z-10">
     <AppInput v-model="searchText" placeholder="Search by title or author" clearabled />
   </div>
   <div v-if="loading" class="flex justify-center items-center h-full">
