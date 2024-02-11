@@ -1,5 +1,5 @@
 type BookListItem = {
-  id: string
+  id: id
   title: string
   authors: string
   coverUrl: string
@@ -7,17 +7,17 @@ type BookListItem = {
 }
 
 type Book = {
-  id: string
+  id?: number
   title: string
-  authors: string
-  categories: string[]
-  publishDate: string
-  createdAt: number
-  publisher: string
-  pageSize: number
-  isbn: string
-  summary: string
-  coverUrl: string
+  authors?: string
+  categories?: string[]
+  publishDate?: string
+  createdAt?: number
+  publisher?: string
+  pageSize?: number
+  isbn?: string
+  summary?: string
+  coverUrl?: string
 }
 
 type NavItem = {

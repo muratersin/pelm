@@ -6,7 +6,7 @@ import AppTopBar from '@/components/common/AppTopBar.vue'
 import AppLoader from '@/components/common/AppLoader.vue'
 import { getBookById } from '@/services/book.service'
 import logger from '@/helpers/logger'
-import AppImage from '@/components/AppImage.vue'
+import AppImage from '@/components/common/AppImage.vue'
 import { formatDate } from '@/helpers/date'
 
 const route = useRoute()

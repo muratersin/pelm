@@ -12,9 +12,11 @@ const props = withDefaults(defineProps<Props>(), {
 const classNames = computed(() => {
   switch (props.type) {
     case 'primary':
-      return 'bg-lime-300'
+      return 'bg-lime-400'
     case 'default':
-      return 'bg-gray-200'
+      return 'bg-gray-100'
+    case 'danger':
+      return 'bg-red-400'
     default:
       return ''
   }
@@ -24,7 +26,7 @@ const classNames = computed(() => {
 <template>
   <button
     v-bind="$attrs"
-    class="block border shadow-sm font-semibold p-2 rounded"
+    class="block border shadow-sm font-semibold py-1 px-5 rounded"
     :class="classNames"
   >
     <slot />

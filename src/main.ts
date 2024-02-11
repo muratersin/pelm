@@ -6,15 +6,15 @@ import { createPinia } from 'pinia'
 import App from '@/App.vue'
 import router from '@/router'
 import { DBService } from '@/services/db.service'
-import logger from './helpers/logger'
-
-const app = createApp(App)
-
-app.use(createPinia())
-app.use(router)
+import logger from '@/helpers/logger'
 
 const start = async () => {
   try {
+    const app = createApp(App)
+
+    app.use(createPinia())
+    app.use(router)
+
     await DBService.instance.init()
     app.mount('#app')
   } catch (err) {
@@ -27,7 +27,6 @@ start()
 // toast message component
 // modal component
 // chose font
-// delete book
 // update book
 // add book
 // stats

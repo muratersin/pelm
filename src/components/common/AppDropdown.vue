@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { Prop, ref } from 'vue'
+import { ref } from 'vue'
 
 interface Props {
   items: { text: string; value: string; class?: string }[]
 }
 
-const emit = defineEmits(['chanage'])
+const emit = defineEmits(['action'])
 defineProps<Props>()
 
 const isOpen = ref<boolean>(false)
 
 const change = (v: string) => {
-  emit('chanage', v)
+  emit('action', v)
 }
 
 window.addEventListener('click', () => {

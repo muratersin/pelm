@@ -41,7 +41,26 @@ export const addBook = (book: Book) => {
   })
 }
 
-export const deleteBook = (id: number) => {}
+export const deleteBookById = (id: number) => {
+  return new Promise((resolve, reject) => {
+    if (!DBService.instance?.db) {
+      return reject('ObjectStore is not found!')
+    }
+
+    const transaction = DBService.instance.db.transaction('books', 'readwrite')
+    const objectStore = transaction.objectStore('books')
+
+    const req = objectStore?.delete(id)
+
+    req.onsuccess = () => {
+      resolve(req.result)
+    }
+
+    req.onerror = () => {
+      reject(req.error)
+    }
+  })
+}
 
 export const updateBook = (book: Book) => {}
 

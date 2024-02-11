@@ -1,4 +1,6 @@
-export const formatDate = (ts: number, page?: string): string => {
+export const formatDate = (ts?: number, page?: string): string => {
+  if (!ts) return '-'
+
   const date = new Date(ts)
 
   if (page === 'detail') {
