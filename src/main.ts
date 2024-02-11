@@ -23,6 +23,10 @@ const start = async () => {
 }
 start()
 
-// stats
-// export lib
+// kitap adı, yazar ve ekleme tarihine göre sıralama
+// default kitap adı olcak
 // fill missing fields from google api and add alternate apis
+// kitap eklerken isbn ve title dan  gelecek
+// pinia itegration
+// refactor
+// stats - son eklenen 3 kitap, toplam kitap sayısı
