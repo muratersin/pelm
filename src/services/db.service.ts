@@ -1,7 +1,7 @@
 import logger from '@/helpers/logger'
 
 export class DBService {
-  private db?: IDBDatabase
+  public db?: IDBDatabase
   private static _instance: DBService
 
   private constructor() {}
@@ -16,7 +16,11 @@ export class DBService {
 
   public init() {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open('PelmDB')
+      if (!('indexedDB' in window)) {
+        throw new Error("This browser doesn't support IndexedDB")
+      }
+
+      const request = indexedDB.open('PelmDB', 22)
 
       request.onerror = () => {
         reject("Why didn't you allow my web app to use IndexedDB?!")
@@ -28,10 +32,12 @@ export class DBService {
         resolve(true)
       }
 
-      request.onupgradeneeded = function () {
+      request.onupgradeneeded = () => {
         const db = request.result
         if (!db.objectStoreNames.contains('books')) {
-          db.createObjectStore('books', { keyPath: 'id', autoIncrement: true })
+          const objectStore = db.createObjectStore('books', { keyPath: 'id', autoIncrement: true })
+          objectStore.createIndex('isbn', 'isbn', { unique: false })
+          objectStore.createIndex('title', 'title', { unique: false })
         }
       }
     })

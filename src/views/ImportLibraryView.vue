@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 
-import { fetchBooks } from '@/services/book.service'
+import { addBook, fetchBookCover } from '@/services/book.service'
 import PageLayout from '@/components/layout/PageLayout.vue'
 import FileSelect from '@/components/import-library/FileSelect.vue'
 import DataPresentation from '@/components/import-library/DataPresentation.vue'
 import MapHeader from '@/components/import-library/MapHeader.vue'
+import ImportProgress from '@/components/import-library/ImportProgress.vue'
 import logger from '@/helpers/logger'
 
 const headers = ref<string[]>([])
@@ -24,32 +25,45 @@ const onFileParsingCompleted = (result: { headers: string[]; data: string[][] })
   completedProgress.total = result.data.length
 }
 
-const save = async (mappedHeaders: any, index = 0) => {
+const save = async (mappedHeaders: any) => {
   try {
-    loading.value = true
-    const bookObject = data.value[index]
-    const book: any = {}
-    logger.info(Object.assign({}, book))
-    Object.keys(mappedHeaders).forEach((header) => {
-      book[header] = bookObject[mappedHeaders[header]]
-    })
+    for (const bookObject of data.value) {
+      loading.value = true
+      const book: any = {}
 
-    const result = await fetchBooks({ isbn: book.isbn, title: book.title })
-    const [firstItem] = result?.items || []
-    book.coverUrl = firstItem?.volumeInfo?.imageLinks?.thumbnail
-    console.log(book, book.coverUrl)
-    setTimeout(() => save(mappedHeaders, index + 1), 300)
+      Object.keys(mappedHeaders).forEach((header) => {
+        book[header] = bookObject[mappedHeaders[header]]
+      })
+
+      try {
+        const result = await fetchBookCover({ isbn: book.isbn, title: book.title })
+        book.coverUrl = result.coverUrl
+      } catch (err) {
+        logger.error("Couln't find cover image.", err)
+      } finally {
+        await addBook(book)
+        logger.info(book)
+      }
+
+      completedProgress.completed += 1
+    }
   } catch (err) {
     logger.error('Save book error: ', err)
   } finally {
     loading.value = false
+    step.value = 1
   }
 }
 </script>
 
 <template>
   <PageLayout title="Import Library">
-    <FileSelect v-if="step === 1" @completed="onFileParsingCompleted" />
+    <ImportProgress
+      v-if="loading"
+      :total="completedProgress.total"
+      :completed="completedProgress.completed"
+    />
+    <FileSelect v-else-if="step === 1" @completed="onFileParsingCompleted" />
     <DataPresentation
       v-else-if="step === 2"
       :headers="headers"

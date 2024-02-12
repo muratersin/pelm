@@ -1,22 +1,23 @@
 type BookListItem = {
-  id: string
-  name: string
-  author: string
-  cover: string
-  createdAt: string
+  id: id
+  title: string
+  authors: string
+  coverUrl: string
+  createdAt: number
 }
 
 type Book = {
-  title: string
-  authors: string[]
-  categories: string[]
-  publishDate: string
-  createdAt: string
-  publisher: string
-  pages: number
-  isbn: string
-  summary: string
-  coverUrl: string
+  id?: number
+  title?: string
+  authors?: string
+  categories?: string[]
+  publishDate?: string
+  createdAt?: number
+  publisher?: string
+  pageSize?: number
+  isbn?: string
+  summary?: string
+  coverUrl?: string
 }
 
 type NavItem = {
@@ -28,21 +29,6 @@ type NavItem = {
 
 type ParsedArray = Array<string[]>
 
-type ParsedFileHeaders = [
-  'Title',
-  'Authors',
-  'Seri',
-  'Categories',
-  'Publish date ',
-  'Publisher',
-  'Pages',
-  'ISBN',
-  'Read',
-  'Reading periods',
-  'Yorumlar',
-  'Summary'
-]
-
 type BookDataHeader = {
   displayedName: string
   name: string
@@ -53,6 +39,11 @@ type GoogleApiHttpResponse<T> = {
   items: T[]
   kind: string
   totalItems: number
+}
+
+type BookCoverRequestResponse = {
+  coverUrl?: string
+  blob: Blob
 }
 
 type GoogleApiBookRequestResponse = GoogleApiHttpResponse<GoogleApiBook>

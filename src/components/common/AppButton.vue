@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import AppLoader from '@/components/common/AppLoader.vue'
 
 interface Props {
   type?: 'primary' | 'danger' | 'success' | 'default'
+  loading?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -12,9 +14,11 @@ const props = withDefaults(defineProps<Props>(), {
 const classNames = computed(() => {
   switch (props.type) {
     case 'primary':
-      return 'bg-lime-300'
+      return 'bg-lime-400'
     case 'default':
-      return 'bg-gray-200'
+      return 'bg-gray-100'
+    case 'danger':
+      return 'bg-red-400'
     default:
       return ''
   }
@@ -24,9 +28,13 @@ const classNames = computed(() => {
 <template>
   <button
     v-bind="$attrs"
-    class="block border shadow-sm font-semibold p-2 rounded"
+    class="block border shadow-sm font-semibold py-1 px-5 rounded"
     :class="classNames"
+    :disabled="loading"
   >
-    <slot />
+    <AppLoader v-if="loading" class="mx-auto" />
+    <div v-else>
+      <slot />
+    </div>
   </button>
 </template>

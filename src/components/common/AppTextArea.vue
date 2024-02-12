@@ -15,7 +15,7 @@ const model = defineModel()
   <div>
     <div v-if="label" class="font-semibold">{{ label }}</div>
     <div class="flex justify-between border rounded border-stone-500 flex-1 p-2">
-      <input v-model="model" v-bind="$attrs" class="w-full focus:outline-none" />
+      <textarea rows="4" v-model="model" v-bind="$attrs" class="w-full focus:outline-none" />
       <IconXCircle
         v-if="clearabled && model"
         @click="model = null"
