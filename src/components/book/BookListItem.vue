@@ -6,12 +6,12 @@ import IconMore from '@/components/icons/IconMore.vue'
 import { formatDate } from '@/helpers/date'
 
 interface Props {
-  book: BookListItem
+  book: Book
 }
 
 const props = defineProps<Props>()
 const emit = defineEmits(['delete', 'update'])
-const date = computed(() => (date: number) => formatDate(date))
+const date = computed(() => (date?: number) => formatDate(date))
 const ACTIONS = [
   { text: 'Delete', value: 'delete', class: 'text-red-400 font-semibold' },
   { text: 'Update', value: 'update' }
@@ -24,7 +24,7 @@ const onDropdownAction = (action: 'delete' | 'update') => {
 
 <template>
   <div class="h-24 w-full shadow-sm flex mb-1 bg-white rounded items-center p-2">
-    <AppImage :src="book.coverUrl" :alt="book.title" class="rounded w-14" />
+    <AppImage :src="book.coverUrl" :alt="book.title || 'cover'" class="rounded w-14" />
     <div class="ml-4 flex-1 truncate">
       <div class="font-semibold text-gray-800 truncate">
         {{ book.title }}

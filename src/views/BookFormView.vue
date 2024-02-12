@@ -5,11 +5,13 @@ import AppTopBar from '@/components/common/AppTopBar.vue'
 import AppInput from '@/components/common/AppInput.vue'
 import AppTextArea from '@/components/common/AppTextArea.vue'
 import AppButton from '@/components/common/AppButton.vue'
-import { addBook, getBookById } from '@/services/book.service'
+import { getBookById } from '@/services/book.service'
 import logger from '@/helpers/logger'
+import { useBookStore } from '@/stores/book'
 
 const route = useRoute()
 const router = useRouter()
+const bookStore = useBookStore()
 const id = computed(() => route.params?.id)
 const title = computed(() => (id.value ? 'Update Book' : 'Add Book'))
 const book = reactive<Book>({})
@@ -41,23 +43,24 @@ const getBook = async () => {
 
 const submit = async (e: Event) => {
   e.preventDefault()
-  console.log('ok')
 
   if (!book.title || !book.authors) {
     alert('Titlea or Authors cant be empty')
     return
   }
+
   loading.value = true
 
-  try {
-    await addBook(Object.assign({}, book))
+  const bookCopy = Object.assign({}, book)
+  const isSuccess = book.id
+    ? await bookStore.updateBook(bookCopy)
+    : await bookStore.addBook(bookCopy)
+
+  if (isSuccess) {
     router.replace('/')
-  } catch (err) {
-    logger.error(err)
-  } finally {
-    loading.value = false
   }
-  console.log(book)
+
+  loading.value = false
 }
 </script>
 
