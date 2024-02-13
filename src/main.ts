@@ -23,6 +23,8 @@ const start = async () => {
 }
 start()
 
-// https://www.reddit.com/r/webdev/comments/z6oj76/api_that_returns_basic_information_about_books/
 // stats
 // fill missing fields from google api and add alternate apis
+// fetch data with isbn or title when added new
+// convert radio sort buttons to select and btn
+// paginate with scroll
