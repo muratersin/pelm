@@ -1,13 +1,13 @@
 import logger from '@/helpers/logger'
 
 interface StorageObject {
-  sortType: string
-  sortBy: string
+  sortType: SortType
+  sortBy: SortBy
 }
 
 const INITIAL_DATA: StorageObject = {
-  sortType: 'desc',
-  sortBy: 'created'
+  sortType: 'next',
+  sortBy: 'createdAt'
 }
 const keyListenerMap: any = {}
 const storageName = 'pelm'

@@ -57,24 +57,24 @@ const deleteBook = async () => {
             <div class="mr-10">
               <input
                 type="radio"
-                id="asc"
+                id="prev"
                 name="sortType"
-                value="asc"
-                @click="bookStore.setSortType('asc')"
-                :checked="bookStore.sortType === 'asc'"
+                value="prev"
+                @click="bookStore.setSortType('prev')"
+                :checked="bookStore.sortType === 'prev'"
               />
-              <label for="asc" class="ml-1">asc</label>
+              <label for="prev" class="ml-1">asc</label>
             </div>
             <div>
               <input
                 type="radio"
-                id="desc"
+                id="next"
                 name="sortType"
-                value="desc"
-                @click="bookStore.setSortType('desc')"
-                :checked="bookStore.sortType === 'desc'"
+                value="next"
+                @click="bookStore.setSortType('next')"
+                :checked="bookStore.sortType === 'next'"
               />
-              <label for="desc" class="ml-1">desc</label>
+              <label for="next" class="ml-1">desc</label>
             </div>
           </div>
         </div>
@@ -109,8 +109,8 @@ const deleteBook = async () => {
                 id="create"
                 name="sortBy"
                 value="created"
-                :checked="bookStore.sortBy === 'created'"
-                @click="bookStore.setSortBy('created')"
+                :checked="bookStore.sortBy === 'createdAt'"
+                @click="bookStore.setSortBy('createdAt')"
               />
               <label for="create" class="ml-1">Create</label>
             </div>

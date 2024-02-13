@@ -1,6 +1,8 @@
-const BOOK_SERVICE = 'http://localhost:3000'
+import { SORT_BY, SORT_TYPES } from '@/constants/book'
 import { fillDefaultFields } from '@/helpers/book'
 import { DBService } from '@/services/db.service'
+
+const BOOK_SERVICE = 'http://localhost:3000'
 
 export const fetchBookCover = async (query: {
   title?: string
@@ -83,23 +85,51 @@ export const deleteBookById = (id: number) => {
   })
 }
 
-export const getBooks = (): Promise<Book[]> => {
+export const getBooks = (
+  index: SortBy = SORT_BY.CreatedAt,
+  direction: SortType = SORT_TYPES.Next,
+  offset: number = 0
+): Promise<Book[]> => {
   return new Promise((resolve, reject) => {
     if (!DBService.instance?.db) {
       return reject('ObjectStore is not found!')
     }
-
+    const results: Book[] = []
     const transaction = DBService.instance.db.transaction('books', 'readwrite')
+
+    transaction.oncomplete = () => resolve(results)
+    transaction.onerror = (event) => reject(event.target)
+
     const objectStore = transaction.objectStore('books')
+    const cursorRequest = objectStore.index(index).openCursor(null, direction)
 
-    const req = objectStore?.getAll()
+    let counter = 0
+    let isOffsetSetted = offset === 0
 
-    req.onsuccess = () => {
-      resolve(req.result)
+    cursorRequest.onsuccess = (e: Event) => {
+      const cursor = e.target.result
+
+      if (!cursor) {
+        return
+      }
+
+      if (!isOffsetSetted) {
+        isOffsetSetted = true
+        cursor.advance(offset)
+      }
+
+      counter++
+      results.push(cursor.value)
+
+      if (counter >= 10) {
+        return
+      }
+
+      cursor.continue()
     }
 
-    req.onerror = () => {
-      reject(req.error)
+    cursorRequest.onerror = () => {
+      reject(cursorRequest.error)
     }
   })
 }

@@ -106,3 +106,7 @@ type GoogleApiBook = {
     textSnippet: string
   }
 }
+
+type SortBy = 'authors' | 'title' | 'createdAt'
+
+type SortType = 'prev' | 'next'

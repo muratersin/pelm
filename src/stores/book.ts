@@ -13,8 +13,8 @@ export const useBookStore = defineStore('book', () => {
   const loading = ref<boolean>(false)
   const initialized = ref<boolean>(false)
   const searchText = ref<string>('')
-  const sortBy = ref<'authors' | 'title' | 'created'>(storage.getItem('sortBy'))
-  const sortType = ref<'asc' | 'desc'>(storage.getItem('sortType'))
+  const sortBy = ref<SortBy>(storage.getItem('sortBy'))
+  const sortType = ref<SortType>(storage.getItem('sortType'))
 
   const filteredBooks = computed(() =>
     books.value?.filter((book) => {
@@ -25,39 +25,6 @@ export const useBookStore = defineStore('book', () => {
       return reg.test(book.title || '') || reg.test(book.authors || '')
     })
   )
-
-  const sortBooks = () => {
-    books.value = books.value.sort((a: Book, b: Book) => {
-      const isDesc = sortType.value === 'desc'
-      let aData: any = a.createdAt
-      let bData: any = b.createdAt
-
-      if (sortBy.value === 'created') {
-        if (isDesc) {
-          return aData - bData
-        }
-
-        return bData - aData
-      }
-
-      if (sortBy.value === 'authors') {
-        aData = a.authors?.toLocaleLowerCase() ?? ''
-        bData = b.authors?.toLocaleLowerCase() ?? ''
-      } else if (sortBy.value === 'title') {
-        aData = a.title?.toLocaleLowerCase()
-        bData = b.title?.toLocaleLowerCase()
-      }
-
-      if (aData < bData) {
-        return isDesc ? 1 : -1
-      } else if (aData > bData) {
-        return isDesc ? -1 : 1
-      }
-      return 0
-    })
-  }
-  watch(sortBy, sortBooks)
-  watch(sortType, sortBooks)
 
   const deleteBook = (id: number) => {
     const i = books.value.findIndex((b) => b.id === id)
@@ -97,15 +64,9 @@ export const useBookStore = defineStore('book', () => {
   }
 
   const fetchBooks = async (): Promise<boolean> => {
-    if (initialized.value) {
-      logger.info('Book store is already initialized.')
-
-      return true
-    }
-
     try {
       loading.value = true
-      books.value = await getBooks()
+      books.value = await getBooks(sortBy.value, sortType.value)
       initialized.value = true
 
       return true
@@ -118,15 +79,18 @@ export const useBookStore = defineStore('book', () => {
     }
   }
 
-  const setSortType = (value: 'asc' | 'desc') => {
+  const setSortType = (value: SortType) => {
     sortType.value = value
     storage.setItem('sortType', value)
   }
 
-  const setSortBy = (value: 'title' | 'authors' | 'created') => {
+  const setSortBy = (value: SortBy) => {
     sortBy.value = value
     storage.setItem('sortBy', value)
   }
+
+  watch(sortBy, fetchBooks)
+  watch(sortType, fetchBooks)
 
   return {
     books,
