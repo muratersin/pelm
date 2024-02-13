@@ -49,16 +49,86 @@ const deleteBook = async () => {
 
 <template>
   <div class="p-2">
-    <div class="flex justify-end">
-      <RouterLink to="/add">
-        <AppButton type="primary" class="text-white bg-lime-600 py-1 px-1 rounded-full">
-          <IconPlus class="m-1" />
-        </AppButton>
-      </RouterLink>
+    <div class="flex">
+      <div class="w-full">
+        <div class="mb-2 border p-2 rounded">
+          <div class="font-semibold mb-2">Sort Type</div>
+          <div class="flex">
+            <div class="mr-10">
+              <input
+                type="radio"
+                id="asc"
+                name="sortType"
+                value="asc"
+                @click="bookStore.setSortType('asc')"
+                :checked="bookStore.sortType === 'asc'"
+              />
+              <label for="asc" class="ml-1">asc</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="desc"
+                name="sortType"
+                value="desc"
+                @click="bookStore.setSortType('desc')"
+                :checked="bookStore.sortType === 'desc'"
+              />
+              <label for="desc" class="ml-1">desc</label>
+            </div>
+          </div>
+        </div>
+        <div class="border p-2 rounded">
+          <div class="font-semibold">Sort By</div>
+          <div class="flex">
+            <div class="mr-10">
+              <input
+                type="radio"
+                id="title"
+                name="sortBy"
+                value="title"
+                :checked="bookStore.sortBy === 'title'"
+                @click="bookStore.setSortBy('title')"
+              />
+              <label for="title" class="ml-1">Title</label>
+            </div>
+            <div class="mr-10">
+              <input
+                type="radio"
+                id="authors"
+                name="sortBy"
+                value="authors"
+                :checked="bookStore.sortBy === 'authors'"
+                @click="bookStore.setSortBy('authors')"
+              />
+              <label for="authors" class="ml-1">Author</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="create"
+                name="sortBy"
+                value="created"
+                :checked="bookStore.sortBy === 'created'"
+                @click="bookStore.setSortBy('created')"
+              />
+              <label for="create" class="ml-1">Create</label>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="w-full bg-white shadow p-2 sticky top-0 z-10">
-    <AppInput v-model="bookStore.searchText" placeholder="Search by title or author" clearabled />
+  <div class="w-full bg-white shadow p-2 sticky top-0 z-10 flex items-center">
+    <AppInput
+      v-model="bookStore.searchText"
+      placeholder="Search by title or author"
+      clearabled
+      class="w-full"
+    />
+    <RouterLink to="/add" class="mx-2">
+      <IconPlus class="w-8 h-auto text-slate-700" />
+    </RouterLink>
   </div>
   <div v-if="loading" class="flex justify-center items-center h-full">
     <AppLoader />
