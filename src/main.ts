@@ -29,6 +29,8 @@ start()
 // kitap eklerken isbn ve title dan  gelecek
 // refactor
 // stats - son eklenen 3 kitap, toplam kitap sayısı
+// stats
+// fill missing fields from google api and add alternate apis
 // fetch data with isbn or title when added new
 // convert radio sort buttons to select and btn
 // paginate with scroll
