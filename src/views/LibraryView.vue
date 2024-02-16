@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import BookList from '@/components/book/BookList.vue'
@@ -8,40 +8,15 @@ import AppInput from '@/components/common/AppInput.vue'
 import AppLoader from '@/components/common/AppLoader.vue'
 import AppModal from '@/components/common/AppModal.vue'
 import IconPlus from '@/components/icons/IconPlus.vue'
-import { getBooks, deleteBookById } from '@/services/book.service'
-import { convertToBookListItem } from '@/helpers/book'
+import { deleteBookById } from '@/services/book.service'
 import logger from '@/helpers/logger'
 import AppButton from '@/components/common/AppButton.vue'
+import { useBookStore } from '@/stores/book'
 
+const bookStore = useBookStore()
 const router = useRouter()
-const books = ref<Array<BookListItem>>()
-const searchText = ref<string>('')
-const loading = ref<boolean>(true)
+const loading = ref<boolean>(false)
 const bookToBeDeleted = ref<Book | null>(null)
-
-onMounted(() => {
-  fetchBooks()
-})
-
-const filteredBooks = computed(() =>
-  books.value?.filter((book) => {
-    if (!searchText.value || searchText.value.length < 3) return true
-
-    const reg = new RegExp(searchText.value, 'gi')
-
-    return reg.test(book.title)
-  })
-)
-
-const fetchBooks = async () => {
-  try {
-    books.value = convertToBookListItem(await getBooks())
-  } catch (err) {
-    logger.error(err)
-  } finally {
-    loading.value = false
-  }
-}
 
 const onAction = (actionName: 'delete' | 'update', id: number, title: string) => {
   logger.info('Show delete modal for: ', { actionName, id, title })
@@ -59,33 +34,107 @@ const onAction = (actionName: 'delete' | 'update', id: number, title: string) =>
 const deleteBook = async () => {
   const id = bookToBeDeleted.value?.id
 
-  if (id) {
-    await deleteBookById(id)
-    books.value = books.value?.filter((b: BookListItem) => b.id !== id)
-  }
+  try {
+    if (id) {
+      await deleteBookById(id)
+      bookStore.deleteBook(id)
+    }
 
-  bookToBeDeleted.value = null
+    bookToBeDeleted.value = null
+  } catch (err) {
+    logger.error(err)
+  }
 }
 </script>
 
 <template>
   <div class="p-2">
-    <div class="flex justify-end">
-      <RouterLink to="/add">
-        <AppButton type="primary" class="text-white bg-lime-600 py-1 px-1 rounded-full">
-          <IconPlus class="m-1" />
-        </AppButton>
-      </RouterLink>
+    <div class="flex">
+      <div class="w-full">
+        <div class="mb-2 border p-2 rounded">
+          <div class="font-semibold mb-2">Sort Type</div>
+          <div class="flex">
+            <div class="mr-10">
+              <input
+                type="radio"
+                id="prev"
+                name="sortType"
+                value="prev"
+                @click="bookStore.setSortType('prev')"
+                :checked="bookStore.sortType === 'prev'"
+              />
+              <label for="prev" class="ml-1">asc</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="next"
+                name="sortType"
+                value="next"
+                @click="bookStore.setSortType('next')"
+                :checked="bookStore.sortType === 'next'"
+              />
+              <label for="next" class="ml-1">desc</label>
+            </div>
+          </div>
+        </div>
+        <div class="border p-2 rounded">
+          <div class="font-semibold">Sort By</div>
+          <div class="flex">
+            <div class="mr-10">
+              <input
+                type="radio"
+                id="title"
+                name="sortBy"
+                value="title"
+                :checked="bookStore.sortBy === 'title'"
+                @click="bookStore.setSortBy('title')"
+              />
+              <label for="title" class="ml-1">Title</label>
+            </div>
+            <div class="mr-10">
+              <input
+                type="radio"
+                id="authors"
+                name="sortBy"
+                value="authors"
+                :checked="bookStore.sortBy === 'authors'"
+                @click="bookStore.setSortBy('authors')"
+              />
+              <label for="authors" class="ml-1">Author</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="create"
+                name="sortBy"
+                value="created"
+                :checked="bookStore.sortBy === 'createdAt'"
+                @click="bookStore.setSortBy('createdAt')"
+              />
+              <label for="create" class="ml-1">Create</label>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="w-full bg-white shadow p-2 sticky top-0 z-10">
-    <AppInput v-model="searchText" placeholder="Search by title or author" clearabled />
+  <div class="w-full bg-white shadow p-2 sticky top-0 z-10 flex items-center">
+    <AppInput
+      v-model="bookStore.searchText"
+      placeholder="Search by title or author"
+      clearabled
+      class="w-full"
+    />
+    <RouterLink to="/add" class="mx-2">
+      <IconPlus class="w-8 h-auto text-slate-700" />
+    </RouterLink>
   </div>
   <div v-if="loading" class="flex justify-center items-center h-full">
     <AppLoader />
   </div>
   <BookList>
-    <RouterLink v-for="item in filteredBooks" :key="item.id" :to="`/book/${item.id}`">
+    <RouterLink v-for="item in bookStore.filteredBooks" :key="item.id" :to="`/book/${item.id}`">
       <BookListItem :book="item" @delete="onAction" @update="onAction" />
     </RouterLink>
   </BookList>

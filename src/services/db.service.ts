@@ -20,10 +20,10 @@ export class DBService {
         throw new Error("This browser doesn't support IndexedDB")
       }
 
-      const request = indexedDB.open('PelmDB', 22)
+      const request = indexedDB.open('PelmDB', 3)
 
-      request.onerror = () => {
-        reject("Why didn't you allow my web app to use IndexedDB?!")
+      request.onerror = (err) => {
+        reject(err)
       }
 
       request.onsuccess = () => {
@@ -36,8 +36,9 @@ export class DBService {
         const db = request.result
         if (!db.objectStoreNames.contains('books')) {
           const objectStore = db.createObjectStore('books', { keyPath: 'id', autoIncrement: true })
-          objectStore.createIndex('isbn', 'isbn', { unique: false })
+          objectStore.createIndex('authors', 'authors', { unique: false })
           objectStore.createIndex('title', 'title', { unique: false })
+          objectStore.createIndex('createdAt', 'createdAt', { unique: false })
         }
       }
     })

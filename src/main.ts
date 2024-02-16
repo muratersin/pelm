@@ -27,6 +27,8 @@ start()
 // default kitap adı olcak
 // fill missing fields from google api and add alternate apis
 // kitap eklerken isbn ve title dan  gelecek
-// pinia itegration
 // refactor
 // stats - son eklenen 3 kitap, toplam kitap sayısı
+// fetch data with isbn or title when added new
+// convert radio sort buttons to select and btn
+// paginate with scroll
