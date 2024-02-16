@@ -1,17 +1,15 @@
 {
-  "lang": "en-us",
-  "name": "Pelm: Personal Library Manager",
-  "short_name": "Pelm",
-  "description": "Personal library manager",
-  "start_url": "/",
-  "background_color": "#2f3d58",
-  "theme_color": "#2f3d58",
-  "orientation": "portrait",
-  "display": "standalone",
+  "name": "Pelm - Personal Library Manager",
+  "short_name": "pelm",
   "icons": [
     {
       "src": "/icon512.png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "type": "image/png"
     }
-  ]
+  ],
+  "start_url": "/",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "display": "standalone"
 }

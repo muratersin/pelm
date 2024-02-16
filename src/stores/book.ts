@@ -35,7 +35,7 @@ export const useBookStore = defineStore('book', () => {
 
   const addBook = async (book: Book): Promise<boolean> => {
     try {
-      await bookServiceAddBook(book)
+      book.id = (await bookServiceAddBook(book)) as unknown as number
       books.value.push(book)
 
       return true

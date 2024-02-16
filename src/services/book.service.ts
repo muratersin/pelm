@@ -1,5 +1,6 @@
 import { SORT_BY, SORT_TYPES } from '@/constants/book'
 import { fillDefaultFields } from '@/helpers/book'
+import { isSecureUrl } from '@/helpers/url'
 import { DBService } from '@/services/db.service'
 
 const BOOK_SERVICE = 'http://localhost:3000'
@@ -30,7 +31,7 @@ export const fillMissingFields = async (book: Book, query: { title?: string; isb
     book.isbn = res.isbn || book.isbn
   }
 
-  if (res.coverUrl && !book.coverUrl) {
+  if (isSecureUrl(res.coverUrl) && !isSecureUrl(book.coverUrl)) {
     book.coverUrl = res.coverUrl
   }
 

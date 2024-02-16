@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
 
 import { addBook, fillMissingFields } from '@/services/book.service'
 import PageLayout from '@/components/layout/PageLayout.vue'
@@ -8,7 +9,10 @@ import DataPresentation from '@/components/import-library/DataPresentation.vue'
 import MapHeader from '@/components/import-library/MapHeader.vue'
 import ImportProgress from '@/components/import-library/ImportProgress.vue'
 import logger from '@/helpers/logger'
+import { useBookStore } from '@/stores/book'
 
+const router = useRouter()
+const bookStore = useBookStore()
 const headers = ref<string[]>([])
 const data = ref<string[][]>([])
 const step = ref<number>(1)
@@ -49,8 +53,10 @@ const save = async (mappedHeaders: any) => {
   } catch (err) {
     logger.error('Save book error: ', err)
   } finally {
+    await bookStore.fetchBooks()
     loading.value = false
     step.value = 1
+    router.push('/')
   }
 }
 </script>
