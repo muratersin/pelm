@@ -41,11 +41,6 @@ type GoogleApiHttpResponse<T> = {
   totalItems: number
 }
 
-type BookCoverRequestResponse = {
-  coverUrl?: string
-  blob: Blob
-}
-
 type GoogleApiBookRequestResponse = GoogleApiHttpResponse<GoogleApiBook>
 
 type GoogleApiBook = {

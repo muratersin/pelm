@@ -4,22 +4,61 @@ import { DBService } from '@/services/db.service'
 
 const BOOK_SERVICE = 'http://localhost:3000'
 
-export const fetchBookCover = async (query: {
-  title?: string
-  isbn?: string
-}): Promise<BookCoverRequestResponse> => {
+export const fetchBookInfo = async (query: { title?: string; isbn?: string }): Promise<Book> => {
   const { isbn, title } = query
 
   if (!isbn && !title) {
     throw new Error('Please provide ISBN or title')
   }
 
-  const apiUrl = `${BOOK_SERVICE}/cover?${isbn ? `isbn=${isbn}` : `title=${title}`}`
+  const apiUrl = `${BOOK_SERVICE}/book?${isbn ? `isbn=${isbn}` : `title=${title}`}`
 
   const response = await fetch(apiUrl)
   const result = await response.json()
 
   return result
+}
+
+export const fillMissingFields = async (book: Book, query: { title?: string; isbn?: string }) => {
+  const res = await fetchBookInfo(query)
+
+  if (res.title && !book.title) {
+    book.title = res.title
+  }
+
+  if (res.isbn) {
+    book.isbn = res.isbn || book.isbn
+  }
+
+  if (res.coverUrl && !book.coverUrl) {
+    book.coverUrl = res.coverUrl
+  }
+
+  if (res.categories && !book.categories) {
+    book.categories = res.categories
+  }
+
+  if (res.authors && !book.authors) {
+    book.authors = res.authors
+  }
+
+  if (res.pageSize && !book.pageSize) {
+    book.pageSize = res.pageSize
+  }
+
+  if (res.publishDate && !book.publishDate) {
+    book.publishDate = res.publishDate
+  }
+
+  if (res.publisher && !book.publisher) {
+    book.publisher = res.publisher
+  }
+
+  if (res.summary && !book.summary) {
+    book.summary = res.summary
+  }
+
+  return book
 }
 
 export const addBook = (book: Book) => {
@@ -107,7 +146,8 @@ export const getBooks = (
     let isOffsetSetted = offset === 0
 
     cursorRequest.onsuccess = (e: Event) => {
-      const cursor = e.target.result
+      // @ts-ignore
+      const cursor = e?.target?.result
 
       if (!cursor) {
         return
@@ -121,9 +161,9 @@ export const getBooks = (
       counter++
       results.push(cursor.value)
 
-      if (counter >= 10) {
-        return
-      }
+      // if (counter >= 10) {
+      //   return
+      // }
 
       cursor.continue()
     }
@@ -141,6 +181,7 @@ export const getBookById = (id: number): Promise<Book> => {
     if (!req) return reject()
 
     req.onsuccess = (event) => {
+      // @ts-ignore
       resolve(event?.target?.result as Book)
     }
 

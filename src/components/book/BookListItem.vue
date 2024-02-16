@@ -23,7 +23,7 @@ const onDropdownAction = (action: 'delete' | 'update') => {
 </script>
 
 <template>
-  <div class="h-24 w-full shadow-sm flex mb-1 bg-white rounded items-center p-2">
+  <div class="h-28 w-full flex border-b bg-white items-center p-2">
     <AppImage :src="book.coverUrl" :alt="book.title || 'cover'" class="rounded w-14" />
     <div class="ml-4 flex-1 truncate">
       <div class="font-semibold text-gray-800 truncate">

@@ -4,7 +4,6 @@ import { RouterView } from 'vue-router'
 
 import NavigationBar from '@/components/navigation/NavigationBar.vue'
 import { NAV_BAR_ITEMS } from '@/constants/navigation'
-import AppLoader from '@/components/common/AppLoader.vue'
 import { useBookStore } from '@/stores/book'
 
 const bookStore = useBookStore()
@@ -16,12 +15,7 @@ onBeforeMount(() => {
 
 <template>
   <main class="overflow-y-auto overflow-x-hidden">
-    <div v-if="bookStore.loading" class="flex justify-center items-center h-full">
-      <AppLoader />
-    </div>
-    <div v-else>
-      <RouterView />
-    </div>
+    <RouterView />
   </main>
   <header>
     <NavigationBar :items="NAV_BAR_ITEMS" />

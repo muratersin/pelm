@@ -8,10 +8,15 @@ defineProps<Props>()
 const emit = defineEmits<{
   change: [value: string | number]
 }>()
+
+const handleChange = (e: Event) => {
+  // @ts-ignore
+  emit('change', e.target.value)
+}
 </script>
 
 <template>
-  <select v-bind="$attrs" class="bg-transparent border rounded py-1 px-2" @change="e => emit('change', e.target.value)">
+  <select v-bind="$attrs" class="bg-transparent border rounded py-1 px-2" @change="handleChange">
     <option>Select...</option>
     <option
       v-for="option in options"

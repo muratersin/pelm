@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 
-import { addBook, fetchBookCover } from '@/services/book.service'
+import { addBook, fillMissingFields } from '@/services/book.service'
 import PageLayout from '@/components/layout/PageLayout.vue'
 import FileSelect from '@/components/import-library/FileSelect.vue'
 import DataPresentation from '@/components/import-library/DataPresentation.vue'
@@ -29,15 +29,14 @@ const save = async (mappedHeaders: any) => {
   try {
     for (const bookObject of data.value) {
       loading.value = true
-      const book: any = {}
+      let book: any = {}
 
       Object.keys(mappedHeaders).forEach((header) => {
         book[header] = bookObject[mappedHeaders[header]]
       })
 
       try {
-        const result = await fetchBookCover({ isbn: book.isbn, title: book.title })
-        book.coverUrl = result.coverUrl
+        book = await fillMissingFields(book, { isbn: book.isbn, title: book.title })
       } catch (err) {
         logger.error("Couln't find cover image.", err)
       } finally {

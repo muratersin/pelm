@@ -3,11 +3,12 @@ import { computed, reactive, ref, onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AppTopBar from '@/components/common/AppTopBar.vue'
 import AppInput from '@/components/common/AppInput.vue'
-import AppTextArea from '@/components/common/AppTextArea.vue'
 import AppButton from '@/components/common/AppButton.vue'
-import { getBookById } from '@/services/book.service'
+import IconSearch from '@/components/icons/IconSearch.vue'
+import { getBookById, fillMissingFields } from '@/services/book.service'
 import logger from '@/helpers/logger'
 import { useBookStore } from '@/stores/book'
+import AppLoader from '@/components/common/AppLoader.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -25,7 +26,7 @@ const getBook = async () => {
   if (!id.value) return
 
   try {
-    const bookData = await getBookById(id.value)
+    const bookData = await getBookById(id.value as unknown as number)
     book.id = bookData.id
     book.title = bookData.title
     book.authors = bookData.authors
@@ -62,37 +63,59 @@ const submit = async (e: Event) => {
 
   loading.value = false
 }
+
+const searchBook = async () => {
+  if (!book.isbn && !book.title) {
+    alert('Please enter isbn or title')
+    return
+  }
+
+  try {
+    loading.value = true
+    await fillMissingFields(book, { isbn: book.isbn, title: book.title })
+  } catch (err) {
+    logger.error('err')
+  } finally {
+    loading.value = false
+  }
+}
 </script>
 
 <template>
   <div class="px-8">
-    <AppTopBar :title="title" />
+    <AppTopBar :title="title">
+      <template v-slot:right>
+        <AppLoader v-if="loading" />
+        <IconSearch v-else class="w-5 cursor-pointer" @click="searchBook" />
+      </template>
+    </AppTopBar>
+
     <div class="mb-5">
-      <AppInput label="Title" v-model="book.title"></AppInput>
+      <AppInput placeholder="Title" v-model="book.title"></AppInput>
     </div>
     <div class="mb-5">
-      <AppInput label="Authors" v-model="book.authors"></AppInput>
+      <AppInput placeholder="Authors" v-model="book.authors"></AppInput>
     </div>
     <div class="mb-5">
-      <AppInput label="Categories" v-model="book.categories"></AppInput>
+      <AppInput placeholder="Categories" v-model="book.categories"></AppInput>
     </div>
     <div class="mb-5">
-      <AppInput label="Publish Date" v-model="book.publishDate"></AppInput>
+      <AppInput placeholder="Publish Date" v-model="book.publishDate"></AppInput>
     </div>
     <div class="mb-5">
-      <AppInput label="Publisher" v-model="book.publisher"></AppInput>
+      <AppInput placeholder="Publisher" v-model="book.publisher"></AppInput>
     </div>
     <div class="mb-5">
-      <AppInput label="Page Size" v-model="book.pageSize"></AppInput>
+      <AppInput placeholder="Page Size" v-model="book.pageSize"></AppInput>
+    </div>
+    <div class="mb-5 flex items-center justify-center">
+      <AppInput placeholder="ISBN" class="w-full" v-model="book.isbn"></AppInput>
     </div>
     <div class="mb-5">
-      <AppInput label="ISBN" v-model="book.isbn"></AppInput>
+      <AppInput placeholder="Cover Image URL" v-model="book.coverUrl"></AppInput>
     </div>
     <div class="mb-5">
-      <AppInput label="Cover Image URL" v-model="book.coverUrl"></AppInput>
-    </div>
-    <div class="mb-5">
-      <AppTextArea label="Summary" v-model="book.summary"></AppTextArea>
+      <AppInput placeholder="Summary" v-model="book.summary"></AppInput>
     </div>
     <AppButton :loading="loading" type="primary" class="w-full my-5" @click="submit">{{
       id ? 'Update' : 'Add'

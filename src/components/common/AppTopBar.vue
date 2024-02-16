@@ -17,6 +17,8 @@ defineProps<Props>()
       <IconLeft class="w-5 cursor-pointer" />
     </div>
     <div class="w-2/4 text-center">{{ title }}</div>
-    <div class="w-1/4 h-1"></div>
+    <div class="w-1/4 h-1 flex justify-end items-center">
+      <slot name="right"></slot>
+    </div>
   </div>
 </template>

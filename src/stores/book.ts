@@ -89,6 +89,8 @@ export const useBookStore = defineStore('book', () => {
     storage.setItem('sortBy', value)
   }
 
+  const totalBooks = computed(() => books.value.length)
+
   watch(sortBy, fetchBooks)
   watch(sortType, fetchBooks)
 
@@ -99,6 +101,7 @@ export const useBookStore = defineStore('book', () => {
     sortType,
     loading,
     filteredBooks,
+    totalBooks,
     setSortBy,
     setSortType,
     addBook,

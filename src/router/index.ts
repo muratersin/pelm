@@ -29,6 +29,11 @@ const router = createRouter({
       component: () => import('@/views/ExportLibraryView.vue')
     },
     {
+      path: '/settings/theme',
+      name: 'theme',
+      component: () => import('@/views/ThemeSettingsView.vue')
+    },
+    {
       path: '/stats',
       name: 'stats',
       component: () => import('@/views/StatsView.vue')
@@ -42,6 +47,11 @@ const router = createRouter({
       path: '/update/:id',
       name: 'update',
       component: () => import('@/views/BookFormView.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('@/views/NotFoundView.vue')
     }
   ]
 })

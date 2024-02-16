@@ -15,7 +15,7 @@ const book = ref<Book>()
 
 const getBook = async () => {
   try {
-    const result = await getBookById(route.params.id)
+    const result = await getBookById(route.params.id as unknown as number)
     book.value = result
   } catch (err) {
     logger.error(err)
@@ -36,7 +36,7 @@ onBeforeMount(getBook)
     <div v-else-if="book">
       <div class="flex">
         <div class="w-1/3">
-          <AppImage :src="book?.coverUrl" :alt="book.title" class="shadow-lg rounded" />
+          <AppImage :src="book?.coverUrl" :alt="book.title ?? 'Book'" class="shadow-lg rounded" />
         </div>
         <div class="ml-4 w-2/3">
           <div class="font-semibold text-xl">{{ book.title }}</div>
