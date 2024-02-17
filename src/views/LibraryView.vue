@@ -70,12 +70,17 @@ const isDesc = computed(() => bookStore.sortType === 'prev')
 </script>
 
 <template>
-  <div class="p-2 bg-slate-50">
+  <div class="p-2 bg-white">
     <div class="flex">
       <div class="w-full flex">
         <div class="w-1/5 font-semibold">Sort:</div>
         <div class="w-3/5 mr-2">
-          <AppSelect :options="options" @change="bookStore.setSortBy" class="w-full"></AppSelect>
+          <AppSelect
+            :options="options"
+            :value="bookStore.sortBy"
+            @change="bookStore.setSortBy"
+            class="w-full"
+          ></AppSelect>
         </div>
         <div class="w1/5">
           <AppButton @click="toggleSortType" class="w-full">
@@ -85,12 +90,12 @@ const isDesc = computed(() => bookStore.sortType === 'prev')
       </div>
     </div>
   </div>
-  <div class="w-full bg-white shadow p-2 sticky top-0 z-10 flex items-center">
+  <div class="w-full bg-white shadow-sm p-2 sticky top-0 z-10 flex items-center">
     <AppInput
       v-model="bookStore.searchText"
       placeholder="Search by title or author"
       clearabled
-      class="w-full"
+      class="w-full bg-white"
     />
     <RouterLink to="/add" class="mx-2">
       <IconPlus class="w-8 h-auto text-slate-700" />

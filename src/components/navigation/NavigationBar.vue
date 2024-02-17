@@ -9,7 +9,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <nav class="w-full h-full flex border-t shadow-lg shadow-lime-500">
+  <nav class="w-full h-full flex border-t">
     <NavigationItem v-for="item of items" kind="bar" :key="item.to" :item="item" />
   </nav>
 </template>

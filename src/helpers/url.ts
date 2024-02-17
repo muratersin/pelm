@@ -7,5 +7,5 @@ export const isSecureUrl = (str: string = '') => {
     return false
   }
 
-  return url.protocol === 'https:'
+  return url.protocol === 'http:' || url.protocol === 'https:'
 }

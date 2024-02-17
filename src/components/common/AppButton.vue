@@ -28,7 +28,7 @@ const classNames = computed(() => {
 <template>
   <button
     v-bind="$attrs"
-    class="block border shadow-sm font-semibold py-1 px-5 rounded"
+    class="block border font-semibold py-1 px-4 rounded"
     :class="classNames"
     :disabled="loading"
   >

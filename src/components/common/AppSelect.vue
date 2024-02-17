@@ -16,7 +16,7 @@ const handleChange = (e: Event) => {
 </script>
 
 <template>
-  <select v-bind="$attrs" class="bg-transparent border rounded py-1 px-2" @change="handleChange">
+  <select v-bind="$attrs" class="bg-transparent border rounded p-2" @change="handleChange">
     <option>Select...</option>
     <option
       v-for="option in options"

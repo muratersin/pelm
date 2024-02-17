@@ -16,6 +16,6 @@ export const NAV_BAR_ITEMS: NavItem[] = [
 
 export const SETTINGS_NAV_LIST_ITEMS: NavItem[] = [
   { to: '/settings/import', icon: IconImport, title: 'Import Library' },
-  { to: '/settings/export', icon: IconExport, title: 'Export Library' },
-  { to: '/settings/theme', icon: IconPalette, title: 'Theme' }
+  { to: '/settings/export', icon: IconExport, title: 'Export Library' }
+  // { to: '/settings/theme', icon: IconPalette, title: 'Theme' }
 ]

@@ -7,7 +7,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <div :class="`bg-rose-200`">
+  <div class="bg-slate-200">
     <div class="px-2 py-4 text-center">
       <span class="text-xl mx-auto font-semibold">{{ title }}</span>
     </div>
