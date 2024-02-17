@@ -72,7 +72,7 @@ const isDesc = computed(() => bookStore.sortType === 'prev')
 <template>
   <div class="p-2 bg-white">
     <div class="flex">
-      <div class="w-full flex">
+      <div class="w-full flex items-center justify-between">
         <div class="w-1/5 font-semibold">Sort:</div>
         <div class="w-3/5 mr-2">
           <AppSelect
@@ -83,7 +83,7 @@ const isDesc = computed(() => bookStore.sortType === 'prev')
           ></AppSelect>
         </div>
         <div class="w1/5">
-          <AppButton @click="toggleSortType" class="w-full">
+          <AppButton @click="toggleSortType" class="w-full bg-rose-400 text-white">
             <component :is="isDesc ? IconArrowDown : IconArrowUp" />
           </AppButton>
         </div>
