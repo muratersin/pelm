@@ -12,7 +12,7 @@ const props = defineProps<Props>()
 const isCurrent = computed(() => route.path === props.item.to)
 const isBar = computed(() => props.kind === 'bar')
 const classNames = computed(() => ({
-  'text-rose-400': isCurrent.value,
+  'text-rose-300': isCurrent.value,
   'items-center flex-1 justify-center p-3': isBar.value,
   'w-full px-2 py-4 border-b': !isBar.value
 }))
