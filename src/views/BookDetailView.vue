@@ -7,15 +7,23 @@ import AppLoader from '@/components/common/AppLoader.vue'
 import { getBookById } from '@/services/book.service'
 import logger from '@/helpers/logger'
 import AppImage from '@/components/common/AppImage.vue'
+import AppModal from '@/components/common/AppModal.vue'
 import { formatDate } from '@/helpers/date'
+import IconEdit from '@/components/icons/IconEdit.vue'
+import IconXCircle from '@/components/icons/IconXCircle.vue'
+import AppButton from '@/components/common/AppButton.vue'
+import { useBookStore } from '@/stores/book'
 
+const bookStore = useBookStore()
 const route = useRoute()
 const loading = ref<boolean>(true)
 const book = ref<Book>()
+const noteMode = ref<'show' | 'edit' | undefined>(undefined)
 
 const getBook = async () => {
   try {
     const result = await getBookById(route.params.id as unknown as number)
+    result.note = result.note || ''
     book.value = result
   } catch (err) {
     logger.error(err)
@@ -24,12 +32,20 @@ const getBook = async () => {
   }
 }
 
+const saveNote = async () => {
+  await bookStore.updateBook(Object.assign({}, book.value))
+
+  noteMode.value = undefined
+}
+
 onBeforeMount(getBook)
 </script>
 
 <template>
   <div class="px-8">
-    <AppTopBar title="Book" />
+    <AppTopBar title="Book">
+      <template v-slot:right> <IconEdit class="w-5" @click="noteMode = 'show'" /> </template>
+    </AppTopBar>
     <div v-if="loading" class="flex justify-center">
       <AppLoader />
     </div>
@@ -69,6 +85,33 @@ onBeforeMount(getBook)
         <h4 class="font-semibold mb-2">Summary</h4>
         <p class="text-gray-600">{{ book.summary }}</p>
       </div>
+      <AppModal v-if="noteMode !== undefined" full>
+        <div class="w-full">
+          <div class="flex justify-between mb-4">
+            <span class="font-semibold">Note</span>
+            <IconXCircle @click="noteMode = undefined" />
+          </div>
+          <div v-if="noteMode === 'edit'">
+            <textarea
+              rows="5"
+              cols="33"
+              placeholder="note"
+              class="w-full border p-1 rounded"
+              v-model="book.note"
+            >
+            </textarea>
+          </div>
+          <div v-else>
+            {{ book?.note || 'There is no note.' }}
+          </div>
+          <div class="flex justify-end mt-4">
+            <AppButton v-if="noteMode === 'edit'" @click="saveNote" type="primary">
+              Save
+            </AppButton>
+            <AppButton v-else type="primary" @click="noteMode = 'edit'"> Edit </AppButton>
+          </div>
+        </div>
+      </AppModal>
     </div>
   </div>
 </template>

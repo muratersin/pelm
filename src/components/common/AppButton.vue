@@ -14,9 +14,9 @@ const props = withDefaults(defineProps<Props>(), {
 const classNames = computed(() => {
   switch (props.type) {
     case 'primary':
-      return 'bg-lime-400'
+      return 'primary'
     case 'default':
-      return 'bg-gray-100'
+      return 'secondary'
     case 'danger':
       return 'bg-red-400'
     default:

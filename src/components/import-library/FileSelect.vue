@@ -36,7 +36,7 @@ const handleFileChange = async () => {
 
 <template>
   <div
-    class="border border-gray-400 rounded p-9 flex justify-center items-center flex-col"
+    class="border bg-gray-100 border-gray-400 rounded p-9 my-9 flex justify-center items-center flex-col"
     role="button"
     @click="fileInput.click"
   >

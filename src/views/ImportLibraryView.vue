@@ -63,19 +63,21 @@ const save = async (mappedHeaders: any) => {
 
 <template>
   <PageLayout title="Import Library">
-    <ImportProgress
-      v-if="loading"
-      :total="completedProgress.total"
-      :completed="completedProgress.completed"
-    />
-    <FileSelect v-else-if="step === 1" @completed="onFileParsingCompleted" />
-    <DataPresentation
-      v-else-if="step === 2"
-      :headers="headers"
-      :data="data"
-      @goBack="step = 1"
-      @goNext="step = 3"
-    />
-    <MapHeader v-else-if="step === 3" :headers="headers" @goBack="step = 2" @save="save" />
+    <div class="px-5">
+      <ImportProgress
+        v-if="loading"
+        :total="completedProgress.total"
+        :completed="completedProgress.completed"
+      />
+      <FileSelect v-else-if="step === 1" @completed="onFileParsingCompleted" />
+      <DataPresentation
+        v-else-if="step === 2"
+        :headers="headers"
+        :data="data"
+        @goBack="step = 1"
+        @goNext="step = 3"
+      />
+      <MapHeader v-else-if="step === 3" :headers="headers" @goBack="step = 2" @save="save" />
+    </div>
   </PageLayout>
 </template>

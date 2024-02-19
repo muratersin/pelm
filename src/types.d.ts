@@ -18,6 +18,7 @@ type Book = {
   isbn?: string
   summary?: string
   coverUrl?: string
+  note?: string
 }
 
 type NavItem = {

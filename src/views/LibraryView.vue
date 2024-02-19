@@ -83,7 +83,7 @@ const isDesc = computed(() => bookStore.sortType === 'prev')
           ></AppSelect>
         </div>
         <div class="w1/5">
-          <AppButton @click="toggleSortType" class="w-full bg-rose-400 text-white">
+          <AppButton @click="toggleSortType" type="primary" class="w-full subtheme-text">
             <component :is="isDesc ? IconArrowDown : IconArrowUp" />
           </AppButton>
         </div>

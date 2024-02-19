@@ -37,6 +37,7 @@ const getBook = async () => {
     book.isbn = bookData.isbn
     book.coverUrl = bookData.coverUrl
     book.summary = bookData.summary
+    book.note = bookData.note
   } catch (err) {
     logger.error(err)
   }
@@ -116,6 +117,9 @@ const searchBook = async () => {
     </div>
     <div class="mb-5">
       <AppInput placeholder="Summary" v-model="book.summary"></AppInput>
+    </div>
+    <div class="mb-5">
+      <AppInput placeholder="Note" v-model="book.note"></AppInput>
     </div>
     <AppButton :loading="loading" type="primary" class="w-full my-5" @click="submit">{{
       id ? 'Update' : 'Add'

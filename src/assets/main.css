@@ -6,3 +6,41 @@
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 55px;
 }
+
+:root {
+  --primary: #b5c0d0;
+  --secondary: #ccd3ca;
+  --subtheme: #f5e8dd;
+  --pink: #eed3d9;
+}
+
+.primary-text {
+  color: var(--primary);
+}
+
+.primary {
+  background-color: var(--primary);
+}
+
+.secondary-text {
+  color: var(--secondary);
+}
+
+.secondary {
+  background-color: var(--secondary);
+}
+.pink-text {
+  color: var(--pink);
+}
+
+.pink {
+  background-color: var(--pink);
+}
+
+.subtheme-text {
+  color: var(--subtheme);
+}
+
+.subtheme {
+  background-color: var(--subtheme);
+}

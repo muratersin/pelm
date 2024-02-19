@@ -23,6 +23,4 @@ const start = async () => {
 }
 start()
 
-// stats - son eklenen 3 kitap, toplam kitap sayısı
-// settings tema
-// kitaba not düşme
+// stats - son eklenen 3 kitap, toplam kitap sayısı Top 3 yazar ve kitap sayıları, son 15 günde eklenen kitap sayısı
