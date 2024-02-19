@@ -1,6 +1,6 @@
 <script setup lang="ts">
 interface Props {
-  full: boolean
+  full?: boolean
 }
 
 defineProps<Props>()
