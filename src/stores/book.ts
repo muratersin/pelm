@@ -63,6 +63,20 @@ export const useBookStore = defineStore('book', () => {
     }
   }
 
+  const topAuthors = computed(() => {
+    const authorsMap = books.value.reduce((acc: any, curr: Book) => {
+      if (curr.authors !== undefined) {
+        acc[curr.authors] = acc[curr.authors] ?? 0
+        acc[curr.authors] += 1
+      }
+      return acc
+    }, {})
+
+    return Object.entries(authorsMap)
+      .sort((a: [string, unknown], b: [string, unknown]) => b[1] - a[1])
+      .slice(0, 10)
+  })
+
   const fetchBooks = async (): Promise<boolean> => {
     try {
       loading.value = true
@@ -102,6 +116,7 @@ export const useBookStore = defineStore('book', () => {
     loading,
     filteredBooks,
     totalBooks,
+    topAuthors,
     setSortBy,
     setSortType,
     addBook,

@@ -144,7 +144,6 @@ export const getBooks = (
     const objectStore = transaction.objectStore('books')
     const cursorRequest = objectStore.index(index).openCursor(null, direction)
 
-    let counter = 0
     let isOffsetSetted = offset === 0
 
     cursorRequest.onsuccess = (e: Event) => {
@@ -160,12 +159,7 @@ export const getBooks = (
         cursor.advance(offset)
       }
 
-      counter++
       results.push(cursor.value)
-
-      // if (counter >= 10) {
-      //   return
-      // }
 
       cursor.continue()
     }

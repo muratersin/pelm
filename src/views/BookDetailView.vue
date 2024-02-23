@@ -18,7 +18,8 @@ const bookStore = useBookStore()
 const route = useRoute()
 const loading = ref<boolean>(true)
 const book = ref<Book>()
-const noteMode = ref<'show' | 'edit' | undefined>(undefined)
+const showNoteEditModal = ref<boolean>(false)
+const bookNote = ref<string>('')
 
 const getBook = async () => {
   try {
@@ -33,9 +34,22 @@ const getBook = async () => {
 }
 
 const saveNote = async () => {
-  await bookStore.updateBook(Object.assign({}, book.value))
+  if (book.value) {
+    book.value.note = bookNote.value
+    await bookStore.updateBook(Object.assign({}, book.value))
+  }
 
-  noteMode.value = undefined
+  showNoteEditModal.value = false
+}
+
+const editNote = () => {
+  showNoteEditModal.value = true
+  bookNote.value = book.value?.note ?? ''
+}
+
+const closeEditNoteModal = () => {
+  showNoteEditModal.value = false
+  bookNote.value = ''
 }
 
 onBeforeMount(getBook)
@@ -44,7 +58,7 @@ onBeforeMount(getBook)
 <template>
   <div class="px-8">
     <AppTopBar title="Book">
-      <template v-slot:right> <IconEdit class="w-5" @click="noteMode = 'show'" /> </template>
+      <template v-slot:right> <IconEdit class="w-5" @click="editNote" /> </template>
     </AppTopBar>
     <div v-if="loading" class="flex justify-center">
       <AppLoader />
@@ -81,34 +95,32 @@ onBeforeMount(getBook)
       <div v-if="book.categories" class="font-semibold text-sm border-b py-2 text-gray-500">
         <span>Categories - </span> <span class="text-lime-700">{{ book.categories }}</span>
       </div>
+      <div v-if="book.note" class="mt-4">
+        <h4 class="font-semibold mb-2">Note</h4>
+        <p class="text-gray-600">{{ book.note }}</p>
+      </div>
       <div v-if="book.summary" class="mt-4">
         <h4 class="font-semibold mb-2">Summary</h4>
         <p class="text-gray-600">{{ book.summary }}</p>
       </div>
-      <AppModal v-if="noteMode !== undefined" full>
+      <AppModal v-if="showNoteEditModal" full>
         <div class="w-full">
           <div class="flex justify-between mb-4">
             <span class="font-semibold">Note</span>
-            <IconXCircle @click="noteMode = undefined" />
+            <IconXCircle @click="closeEditNoteModal" />
           </div>
-          <div v-if="noteMode === 'edit'">
+          <div>
             <textarea
               rows="5"
               cols="33"
               placeholder="note"
               class="w-full border p-1 rounded"
-              v-model="book.note"
+              v-model="bookNote"
             >
             </textarea>
           </div>
-          <div v-else>
-            {{ book?.note || 'There is no note.' }}
-          </div>
           <div class="flex justify-end mt-4">
-            <AppButton v-if="noteMode === 'edit'" @click="saveNote" type="primary">
-              Save
-            </AppButton>
-            <AppButton v-else type="primary" @click="noteMode = 'edit'"> Edit </AppButton>
+            <AppButton @click="saveNote" type="primary"> Save </AppButton>
           </div>
         </div>
       </AppModal>
