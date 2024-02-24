@@ -1,17 +1,23 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { onBeforeMount } from 'vue'
+import { RouterView } from 'vue-router'
+
+import NavigationBar from '@/components/navigation/NavigationBar.vue'
+import { NAV_BAR_ITEMS } from '@/constants/navigation'
+import { useBookStore } from '@/stores/book'
+
+const bookStore = useBookStore()
+
+onBeforeMount(() => {
+  bookStore.fetchBooks()
+})
 </script>
 
 <template>
-  <RouterView />
+  <main class="overflow-y-auto overflow-x-hidden">
+    <RouterView />
+  </main>
   <header>
-    <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
-
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
+    <NavigationBar :items="NAV_BAR_ITEMS" />
   </header>
 </template>
