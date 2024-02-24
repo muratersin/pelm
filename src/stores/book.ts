@@ -72,9 +72,12 @@ export const useBookStore = defineStore('book', () => {
       return acc
     }, {})
 
-    return Object.entries(authorsMap)
-      .sort((a: [string, unknown], b: [string, unknown]) => b[1] - a[1])
-      .slice(0, 10)
+    return (
+      Object.entries(authorsMap)
+        // @ts-expect-error
+        .sort((a: [string, unknown], b: [string, unknown]) => b[1] - a[1])
+        .slice(0, 10)
+    )
   })
 
   const fetchBooks = async (): Promise<boolean> => {
