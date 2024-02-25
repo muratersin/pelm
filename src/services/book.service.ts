@@ -3,8 +3,7 @@ import { fillDefaultFields } from '@/helpers/book'
 import { isSecureUrl } from '@/helpers/url'
 import { DBService } from '@/services/db.service'
 
-// const BOOK_SERVICE = 'http://159.223.215.87:3000'
-const BOOK_SERVICE = 'http://localhost:3000'
+const BOOK_SERVICE = 'https://localhost:3000'
 
 export const fetchBookInfo = async (query: { title?: string; isbn?: string }): Promise<Book> => {
   const { isbn, title } = query

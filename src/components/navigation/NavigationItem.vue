@@ -19,7 +19,7 @@ const isCurrent = computed(() => {
 const isBar = computed(() => props.kind === 'bar')
 const classNames = computed(() => ({
   subtheme: isCurrent.value,
-  'items-center flex-1 justify-center p-3': isBar.value,
+  'items-center flex-1 justify-center p-3 pb-8': isBar.value,
   'w-full px-2 py-4 border-b': !isBar.value
 }))
 </script>
