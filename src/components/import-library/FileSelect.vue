@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineEmits } from 'vue'
+import { ref } from 'vue'
 import logger from '@/helpers/logger'
 import { parseNConvertToJson } from '@/helpers/file'
 import IconImport from '@/components/icons/IconImport.vue'
