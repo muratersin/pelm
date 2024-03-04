@@ -5,7 +5,8 @@ import AppTopBar from '@/components/common/AppTopBar.vue'
 import AppInput from '@/components/common/AppInput.vue'
 import AppButton from '@/components/common/AppButton.vue'
 import IconSearch from '@/components/icons/IconSearch.vue'
-import { getBookById, fillMissingFields } from '@/services/book.service'
+import BookListModal from '@/components/book/BookListModal.vue'
+import { getBookById, fillMissingFields, fetchBookInfo } from '@/services/book.service'
 import logger from '@/helpers/logger'
 import { useBookStore } from '@/stores/book'
 import AppLoader from '@/components/common/AppLoader.vue'
@@ -17,10 +18,16 @@ const id = computed(() => route.params?.id)
 const title = computed(() => (id.value ? 'Update Book' : 'Add Book'))
 const book = reactive<Book>({})
 const loading = ref<boolean>(false)
+const searchResult = ref<Book[]>([])
 
 onBeforeMount(() => {
   getBook()
 })
+
+const onBookSelected = (selectedBook: Book) => {
+  fillMissingFields(book, selectedBook)
+  searchResult.value = []
+}
 
 const getBook = async () => {
   if (!id.value) return
@@ -66,19 +73,24 @@ const submit = async (e: Event) => {
 }
 
 const searchBook = async () => {
-  if (!book.isbn && !book.title) {
-    alert('Please enter isbn or title')
+  if (!book.isbn && !book.title && !book.authors) {
+    alert('Please enter isbn, title or author')
     return
   }
 
   try {
     loading.value = true
-    await fillMissingFields(book, { isbn: book.isbn, title: book.title })
+    const query = { isbn: book.isbn, title: book.title, author: book.authors }
+    searchResult.value = await fetchBookInfo(query)
   } catch (err) {
     logger.error('err')
   } finally {
     loading.value = false
   }
+}
+
+const closeBookListModal = () => {
+  searchResult.value = []
 }
 </script>
 
@@ -124,5 +136,11 @@ const searchBook = async () => {
     <AppButton :loading="loading" type="primary" class="w-full my-5" @click="submit">{{
       id ? 'Update' : 'Add'
     }}</AppButton>
+    <BookListModal
+      :books="searchResult"
+      v-if="searchResult.length > 0"
+      @selected="onBookSelected"
+      @close="closeBookListModal"
+    />
   </div>
 </template>

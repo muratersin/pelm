@@ -7,6 +7,7 @@ import { formatDate } from '@/helpers/date'
 
 interface Props {
   book: Book
+  lean?: boolean
 }
 
 const props = defineProps<Props>()
@@ -32,7 +33,7 @@ const onDropdownAction = (action: 'delete' | 'update') => {
       <div class="text-gray-500">{{ book.authors }}</div>
       <div class="text-gray-300 flex justify-end">{{ date(book.createdAt) }}</div>
     </div>
-    <div class="ml-4 h-full">
+    <div class="ml-4 h-full" v-if="!lean">
       <AppDropdown :items="ACTIONS" @action="onDropdownAction">
         <IconMore class="text-gray-500 w-5" />
       </AppDropdown>

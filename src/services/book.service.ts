@@ -3,60 +3,82 @@ import { fillDefaultFields } from '@/helpers/book'
 import { isSecureUrl } from '@/helpers/url'
 import { DBService } from '@/services/db.service'
 
-const BOOK_SERVICE = 'https://localhost:3000'
+const BOOK_SERVICE = 'http://localhost:3000'
 
-export const fetchBookInfo = async (query: { title?: string; isbn?: string }): Promise<Book> => {
-  const { isbn, title } = query
-
-  if (!isbn && !title) {
-    throw new Error('Please provide ISBN or title')
-  }
-
-  const apiUrl = `${BOOK_SERVICE}/book?${isbn ? `isbn=${isbn}` : `title=${title}`}`
-
-  const response = await fetch(apiUrl)
-  const result = await response.json()
-
-  return result
+interface Query {
+  title?: string
+  isbn?: string
+  author?: string
 }
 
-export const fillMissingFields = async (book: Book, query: { title?: string; isbn?: string }) => {
-  const res = await fetchBookInfo(query)
+export const fetchBookInfo = async (query: Query): Promise<Book[]> => {
+  const { isbn, title, author } = query
 
-  if (res.title && !book.title) {
-    book.title = res.title
+  if (!isbn && !title && !author) {
+    throw new Error('Please provide ISBN or title')
+  }
+  const url = new URL(BOOK_SERVICE)
+  url.pathname = '/book'
+  if (isbn) {
+    url.searchParams.append('isbn', isbn)
+  }
+  if (title) {
+    url.searchParams.append('title', title)
+  }
+  if (author) {
+    url.searchParams.append('author', author)
   }
 
-  if (res.isbn) {
-    book.isbn = res.isbn || book.isbn
+  const response = await fetch(url.toString())
+  const result = await response.json()
+  return result?.data || []
+}
+
+export const fetchNFillMissingFields = async (book: Book, query: Query) => {
+  const [result] = await fetchBookInfo({ isbn: query.title, title: query.title })
+
+  if (!result) {
+    return book
   }
 
-  if (isSecureUrl(res.coverUrl) && !isSecureUrl(book.coverUrl)) {
-    book.coverUrl = res.coverUrl
+  return fillMissingFields(book, result)
+}
+
+export const fillMissingFields = (book: Book, newBook: Book) => {
+  if (newBook.title && !book.title) {
+    book.title = newBook.title
   }
 
-  if (res.categories && !book.categories) {
-    book.categories = res.categories
+  if (newBook.isbn) {
+    book.isbn = newBook.isbn || book.isbn
   }
 
-  if (res.authors && !book.authors) {
-    book.authors = res.authors
+  if (isSecureUrl(newBook.coverUrl) && !isSecureUrl(book.coverUrl)) {
+    book.coverUrl = newBook.coverUrl
   }
 
-  if (res.pageSize && !book.pageSize) {
-    book.pageSize = res.pageSize
+  if (newBook.categories && !book.categories) {
+    book.categories = newBook.categories
   }
 
-  if (res.publishDate && !book.publishDate) {
-    book.publishDate = res.publishDate
+  if (newBook.authors && !book.authors) {
+    book.authors = newBook.authors
   }
 
-  if (res.publisher && !book.publisher) {
-    book.publisher = res.publisher
+  if (newBook.pageSize && !book.pageSize) {
+    book.pageSize = newBook.pageSize
   }
 
-  if (res.summary && !book.summary) {
-    book.summary = res.summary
+  if (newBook.publishDate && !book.publishDate) {
+    book.publishDate = newBook.publishDate
+  }
+
+  if (newBook.publisher && !book.publisher) {
+    book.publisher = newBook.publisher
+  }
+
+  if (newBook.summary && !book.summary) {
+    book.summary = newBook.summary
   }
 
   return book

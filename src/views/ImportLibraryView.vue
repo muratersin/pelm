@@ -2,7 +2,7 @@
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
-import { addBook, fillMissingFields } from '@/services/book.service'
+import { addBook, fetchNFillMissingFields } from '@/services/book.service'
 import PageLayout from '@/components/layout/PageLayout.vue'
 import FileSelect from '@/components/import-library/FileSelect.vue'
 import DataPresentation from '@/components/import-library/DataPresentation.vue'
@@ -40,7 +40,7 @@ const save = async (mappedHeaders: any) => {
       })
 
       try {
-        book = await fillMissingFields(book, { isbn: book.isbn, title: book.title })
+        book = await fetchNFillMissingFields(book, { isbn: book.isbn, title: book.title })
       } catch (err) {
         logger.error("Couln't find cover image.", err)
       } finally {
