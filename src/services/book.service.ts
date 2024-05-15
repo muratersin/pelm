@@ -3,7 +3,7 @@ import { fillDefaultFields } from '@/helpers/book'
 import { isSecureUrl } from '@/helpers/url'
 import { DBService } from '@/services/db.service'
 
-const BOOK_SERVICE = 'http://localhost:3000'
+const BOOK_SERVICE = 'https://qf4kaw3xm2oaoisjkdm7iimg2a0bmxvl.lambda-url.eu-west-1.on.aws'
 
 interface Query {
   title?: string
@@ -18,7 +18,7 @@ export const fetchBookInfo = async (query: Query): Promise<Book[]> => {
     throw new Error('Please provide ISBN or title')
   }
   const url = new URL(BOOK_SERVICE)
-  url.pathname = '/book'
+
   if (isbn) {
     url.searchParams.append('isbn', isbn)
   }
@@ -44,8 +44,8 @@ export const fetchNFillMissingFields = async (book: Book, query: Query) => {
   return fillMissingFields(book, result)
 }
 
-export const fillMissingFields = (book: Book, newBook: Book) => {
-  if (newBook.title && !book.title) {
+export const fillMissingFields = (book: Book, newBook: Book, override?: boolean) => {
+  if (newBook.title && (!book.title || override)) {
     book.title = newBook.title
   }
 
@@ -57,27 +57,27 @@ export const fillMissingFields = (book: Book, newBook: Book) => {
     book.coverUrl = newBook.coverUrl
   }
 
-  if (newBook.categories && !book.categories) {
+  if (newBook.categories && (!book.categories || override)) {
     book.categories = newBook.categories
   }
 
-  if (newBook.authors && !book.authors) {
+  if (newBook.authors && (!book.authors || override)) {
     book.authors = newBook.authors
   }
 
-  if (newBook.pageSize && !book.pageSize) {
+  if (newBook.pageSize && (!book.pageSize || override)) {
     book.pageSize = newBook.pageSize
   }
 
-  if (newBook.publishDate && !book.publishDate) {
+  if (newBook.publishDate && (!book.publishDate || override)) {
     book.publishDate = newBook.publishDate
   }
 
-  if (newBook.publisher && !book.publisher) {
+  if (newBook.publisher && (!book.publisher || override)) {
     book.publisher = newBook.publisher
   }
 
-  if (newBook.summary && !book.summary) {
+  if (newBook.summary && (!book.summary || override)) {
     book.summary = newBook.summary
   }
 

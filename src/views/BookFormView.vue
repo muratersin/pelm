@@ -25,7 +25,7 @@ onBeforeMount(() => {
 })
 
 const onBookSelected = (selectedBook: Book) => {
-  fillMissingFields(book, selectedBook)
+  fillMissingFields(book, selectedBook, true)
   searchResult.value = []
 }
 
