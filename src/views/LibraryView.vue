@@ -90,7 +90,7 @@ const isDesc = computed(() => bookStore.sortType === 'prev')
       </div>
     </div>
   </div>
-  <div class="w-full bg-white shadow-sm p-2 sticky top-0 z-10 flex items-center">
+  <div class="w-full subtheme shadow-sm p-2 sticky top-0 z-10 flex items-center">
     <AppInput
       v-model="bookStore.searchText"
       placeholder="Search by title or author"

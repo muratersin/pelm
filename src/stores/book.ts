@@ -22,7 +22,7 @@ export const useBookStore = defineStore('book', () => {
 
       const reg = new RegExp(searchText.value, 'gi')
 
-      return reg.test(book.title || '') || reg.test(book.authors || '')
+      return reg.test(book.title ?? '') || reg.test(book.authors ?? '')
     })
   )
 
@@ -35,8 +35,8 @@ export const useBookStore = defineStore('book', () => {
 
   const addBook = async (book: Book): Promise<boolean> => {
     try {
-      book.id = (await bookServiceAddBook(book)) as unknown as number
-      books.value.push(book)
+      book.id = (await bookServiceAddBook(book)) as number
+      await fetchBooks()
 
       return true
     } catch (err) {

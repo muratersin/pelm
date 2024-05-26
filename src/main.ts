@@ -8,6 +8,12 @@ import router from '@/router'
 import { DBService } from '@/services/db.service'
 import logger from '@/helpers/logger'
 
+window.addEventListener("visibilitychange", function () {
+  if (document.visibilityState === "visible") {
+      window.location.reload();
+  }
+});
+
 const start = async () => {
   try {
     const app = createApp(App)

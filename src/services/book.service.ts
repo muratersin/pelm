@@ -154,13 +154,13 @@ export const getBooks = (
 ): Promise<Book[]> => {
   return new Promise((resolve, reject) => {
     if (!DBService.instance?.db) {
-      return reject('ObjectStore is not found!')
+      return reject(new Error('ObjectStore is not found!'))
     }
     const results: Book[] = []
     const transaction = DBService.instance.db.transaction('books', 'readwrite')
 
     transaction.oncomplete = () => resolve(results)
-    transaction.onerror = (event) => reject(event.target)
+    transaction.onerror = () => reject(new Error('IndexDB, transection error!'))
 
     const objectStore = transaction.objectStore('books')
     const cursorRequest = objectStore.index(index).openCursor(null, direction)
@@ -186,7 +186,7 @@ export const getBooks = (
     }
 
     cursorRequest.onerror = () => {
-      reject(cursorRequest.error)
+      reject(new Error('IndexDB, cursor error!'))
     }
   })
 }
@@ -195,7 +195,7 @@ export const getBookById = (id: number): Promise<Book> => {
   return new Promise((resolve, reject) => {
     const req = DBService?.instance?.db?.transaction('books').objectStore('books').get(Number(id))
 
-    if (!req) return reject()
+    if (!req) return reject(new Error('IndexDB, get error!'))
 
     req.onsuccess = (event) => {
       // @ts-ignore
@@ -203,7 +203,7 @@ export const getBookById = (id: number): Promise<Book> => {
     }
 
     req.onerror = () => {
-      reject(req.error)
+      reject(new Error('IndexDB, get error!'))
     }
   })
 }
